@@ -4,8 +4,6 @@ import logo from "@/../public/freshcart-logo.svg";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import {
@@ -97,8 +95,8 @@ export default function Navbar() {
               <NavigationMenu className="max-w-none *:w-full">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                   {navigationLinks.map((link, index) => (
-                    <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink
+                    <li key={index} className="w-full">
+                      <Link
                         href={link.href}
                         className={`py-1.5 ${
                           isActive(link.href)
@@ -107,8 +105,8 @@ export default function Navbar() {
                         }`}
                       >
                         {link.label}
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
+                      </Link>
+                    </li>
                   ))}
                 </NavigationMenuList>
               </NavigationMenu>
@@ -125,10 +123,10 @@ export default function Navbar() {
             </Link>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
-              <NavigationMenuList className="gap-2">
+              <NavigationMenuList className="gap-2.5">
                 {navigationLinks.map((link, index) => (
-                  <NavigationMenuItem key={index}>
-                    <NavigationMenuLink
+                  <li key={index}>
+                    <Link
                       href={link.href}
                       className={`text-muted-foreground hover:text-primary py-1.5 font-medium ${
                         isActive(link.href)
@@ -137,8 +135,8 @@ export default function Navbar() {
                       }`}
                     >
                       {link.label}
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
+                    </Link>
+                  </li>
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
@@ -152,6 +150,7 @@ export default function Navbar() {
                 <Link
                   href={icon.href}
                   className="size-4 rounded-full hover:text-blue-500"
+                  target="_blank"
                 >
                   {icon.icon}
                 </Link>
