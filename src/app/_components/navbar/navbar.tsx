@@ -95,7 +95,7 @@ export default function Navbar() {
               <NavigationMenu className="max-w-none *:w-full">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                   {navigationLinks.map((link, index) => (
-                    <li key={index} className="w-full">
+                    <li key={index} className="w-full p-2">
                       <Link
                         href={link.href}
                         className={`py-1.5 ${
@@ -125,7 +125,7 @@ export default function Navbar() {
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2.5">
                 {navigationLinks.map((link, index) => (
-                  <li key={index}>
+                  <li key={index} className="px-1">
                     <Link
                       href={link.href}
                       className={`text-muted-foreground hover:text-primary py-1.5 font-medium ${
@@ -144,7 +144,7 @@ export default function Navbar() {
         </div>
         {/* Right side */}
         <div className="flex items-center gap-2">
-          <ul className="flex items-center gap-1.5">
+          <ul className="hidden items-center gap-2 sm:flex">
             {socialIcon.map((icon, idx) => (
               <li key={idx}>
                 <Link
@@ -157,15 +157,15 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          <Button asChild variant="ghost" size="sm" className="text-sm">
+          {/* <Button asChild variant="ghost" size="sm" className="text-sm">
             <Link href="/login">SignIn</Link>
           </Button>
           <Button asChild variant="ghost" size="sm" className="text-sm">
             <Link href="/register">SignUp</Link>
-          </Button>
-          <Button size="sm" className="text-sm cursor-pointer">
+          </Button> */}
+          {/* <Button size="sm" className="text-sm cursor-pointer">
             SignOut
-          </Button>
+          </Button> */}
           <ToggleTheme />
         </div>
       </div>

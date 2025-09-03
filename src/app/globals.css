@@ -1,7 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+
+body{
+    font-family: 'Encode Sans Expanded', sans-serif;
+    @apply overflow-x-hidden
+}
 
 @theme inline {
   --color-background: var(--background);
