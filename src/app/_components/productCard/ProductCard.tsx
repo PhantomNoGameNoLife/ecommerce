@@ -4,12 +4,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { Rating } from 'react-simple-star-rating'
+import { Product } from '@/types/product';
 
-const ProductCard = ({imageCover,price,title,ratingsAverage}) => {
+const ProductCard: React.FC<Product> =  ({imageCover,price,title,ratingsAverage,_id}) => {
   return (
     <div className="w-full max-w-sm bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm">
-        <Link href="/products">
-            <Image className='!w-full !h-[300px] sm:!h-[250px] object-cover' width={300} height={300} src={imageCover} alt='' />
+        <Link href={`/products/${_id}`}>
+            <Image className='!w-full !h-[300px] sm:!h-[250px] object-cover' width={300} height={300} src={imageCover} alt={title} />
         </Link>
         <div className="p-5">
             <Link href="/products">
