@@ -12,8 +12,8 @@ import 'swiper/css';
 
 const HomeSlider = () => {
     return (
-        <section className="mb-10 flex">
-            <div className="w-2/3 rounded-s-xl">
+        <section className="mb-10 flex flex-col md:flex-row">
+            <div className="w-full md:w-2/3 rounded-s-xl">
                 <Swiper
                     spaceBetween={0}
                     slidesPerView={1}
@@ -28,9 +28,9 @@ const HomeSlider = () => {
                     <SwiperSlide><Image className="h-[400px] w-full object-cover rounded-s-xl" width={600} height={400} src={slide3} alt="slide 3" /></SwiperSlide>
                 </Swiper>
             </div>
-            <div className="w-1/3 rounded-e-xl">
-                <Image className="h-[200px] w-full object-cover rounded-e-xl" width={300} height={200} src={banner1} alt="banner 1" />
-                <Image className="h-[200px] w-full object-cover rounded-e-xl" width={300} height={200} src={banner2} alt="banner 2" />
+            <div className="w-full md:w-1/3 rounded-e-xl flex md:block">
+                <Image className="h-[200px] w-1/2 md:w-full object-cover rounded-e-xl" width={300} height={200} src={banner1} alt="banner 1" />
+                <Image className="h-[200px] w-1/2 md:w-full object-cover rounded-e-xl" width={300} height={200} src={banner2} alt="banner 2" />
             </div>
         </section>
     );

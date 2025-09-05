@@ -6,13 +6,13 @@ const loading = () => {
   return (
     <main className="px-4 md:px-6 mt-10">
       {/* main slider */}
-      <section className="flex w-full">
+      <section className="w-full flex flex-col md:flex-row">
         <div className="w-2/3">
           <Skeleton className="h-[400px] w-full rounded-xl" />
         </div>
-        <div className="w-1/3 flex flex-col">
-          <Skeleton className="h-[200px] w-full rounded-xl" />
-          <Skeleton className="h-[200px] w-full rounded-xl" />
+        <div className="w-1/3 flex flex-col md:flex-row">
+          <Skeleton className="h-[200px] w-1/2 md:w-full rounded-xl" />
+          <Skeleton className="h-[200px] w-1/2 md:w-full rounded-xl" />
         </div>
       </section>
       {/* category slider*/}
