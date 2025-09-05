@@ -6,14 +6,15 @@ import React from 'react'
 import { Rating } from 'react-simple-star-rating'
 import { Product } from '@/types/product';
 
-const ProductCard: React.FC<Product> =  ({imageCover,price,title,ratingsAverage,_id}) => {
+const ProductCard: React.FC<Product> =  ({imageCover,price,title,category,ratingsAverage,id}) => {
   return (
     <div className="w-full max-w-sm bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm">
-        <Link href={`/products/${_id}`}>
-            <Image className='!w-full !h-[300px] sm:!h-[250px] object-cover' width={300} height={300} src={imageCover} alt={title} />
+        <Link href={`/productDetails/${id}`}>
+            <Image className='!w-full !h-[300px] sm:!h-[250px] object-cover rounded-t-lg' width={300} height={300} src={imageCover} alt={title} />
         </Link>
         <div className="p-5">
-            <Link href="/products">
+            <h4 className="text-md font-bold tracking-tight text-[var(--chart-1)] line-clamp-1 mb-1">{category.name}</h4>
+            <Link href={`/productDetails/${id}`}>
                 <h5 className="text-xl font-semibold tracking-tight text-[var(--primary)] line-clamp-1">{title}</h5>
             </Link>
             <div className="mt-2.5 mb-5">

@@ -28,7 +28,7 @@ import { usePathname } from "next/navigation";
 const navigationLinks = [
   { href: "/", label: "Home", active: true },
   { href: "/cart", label: "Cart" },
-  { href: "/products", label: "Products" },
+  { href: "/product", label: "Products" },
   { href: "/categories", label: "Categories" },
   { href: "/brands", label: "Brands" },
 ];
@@ -47,7 +47,7 @@ export default function Navbar() {
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
-    // to make products/[id] link active if user click on any product
+    // to make ProductsDetails/[id] link active if user click on any product
     return pathname.startsWith(href);
   };
 
@@ -118,7 +118,7 @@ export default function Navbar() {
               <Image
                 src={logo}
                 alt="logo"
-                className="w-24 sm:w-full dark:invert"
+                className="w-28 sm:w-full dark:invert"
               />
             </Link>
             {/* Navigation menu */}

@@ -11,7 +11,6 @@ import { toggleMode } from "@/redux/themeSlice";
 export default function ToggleTheme() {
   const id = useId();
   const { mode } = useAppSelector((s) => s.theme);
-  console.log(mode)
   const dispatch = useAppDispatch();
 
   return (
