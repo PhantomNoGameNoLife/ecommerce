@@ -9,11 +9,11 @@ const ProductDetailsSkeleton = () => {
           <div className="w-full h-full max-lg:mx-auto">
             <div className="relative mb-6 border rounded-2xl overflow-hidden">
               <Skeleton className="w-full aspect-square rounded-2xl" />
-              <div className="flex gap-2 mt-4 justify-center">
-                {[...Array(4)].map((_, i) => (
+              <div className="flex flex-col gap-2 mt-4 justify-center absolute left-0 bottom-0">
+                {Array.from({ length: 4 }).map((_, index) => (
                   <Skeleton
-                    key={i}
-                    className="size-14 sm:size-20 rounded-full"
+                    key={index}
+                    className="size-10 sm:size-20 rounded-full"
                   />
                 ))}
               </div>

@@ -5,7 +5,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import Image from 'next/image';
 
-const SwiperClient = ({ images } : { images: string[] }) => {
+const ProductSlider = ({ images } : { images: string[] }) => {
   return (
     <Swiper
       spaceBetween={0}
@@ -21,7 +21,7 @@ const SwiperClient = ({ images } : { images: string[] }) => {
         clickable: true,
         renderBullet: (index, className) => {
           return `
-              <span class="${className} !flex !flex-col border b-[var(--chart-1)] rounded-full overflow-hidden !size-10 !mb-2 sm:!size-20">
+              <span class="${className} !flex !flex-col border b-chart-1 rounded-full overflow-hidden !size-10 !mb-2 sm:!size-20">
                 <img 
                   src="${images[index]}" 
                   alt="Slide ${index + 1}" 
@@ -47,4 +47,4 @@ const SwiperClient = ({ images } : { images: string[] }) => {
   );
 };
 
-export default SwiperClient;
+export default ProductSlider;
