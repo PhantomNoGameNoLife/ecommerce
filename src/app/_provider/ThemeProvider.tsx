@@ -1,16 +1,11 @@
-"use client";
+"use client"
 
-import { ReactNode, useEffect } from "react";
-import { useAppSelector } from "@/redux/store";
+import * as React from "react"
+import { ThemeProvider as NextThemesProvider } from "next-themes"
 
-export default function ThemeProvider({ children }: { children: ReactNode }) {
-  const { mode } = useAppSelector((s) => s.theme);
-
-  useEffect(() => {
-    const html = document.documentElement;
-    if (mode === "dark") html.classList.add("dark");
-    else html.classList.remove("dark");
-  }, [mode]);
-
-  return <>{children}</>;
+export default function ThemeProvider({
+  children,
+  ...props
+}: React.ComponentProps<typeof NextThemesProvider>) {
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>
 }

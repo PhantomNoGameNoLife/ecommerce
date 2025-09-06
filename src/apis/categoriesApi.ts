@@ -1,7 +1,5 @@
-import { Categories } from "@/types/Categories";
-
 export async function getAllCategories() {
-  const response = await fetch(`${process.env.API_SECRET_KEY}/categories`);
-  const { data }: { data: Categories[] } = await response.json();
+  const response = await fetch(`${process.env.NEXT_URL}/categories`);
+  const { data } = await response.json();
   return data;
 }

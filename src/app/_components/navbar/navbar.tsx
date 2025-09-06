@@ -157,12 +157,12 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          {/* <Button asChild variant="ghost" size="sm" className="text-sm">
+          <Button asChild variant="ghost" size="sm" className="text-sm">
             <Link href="/login">SignIn</Link>
           </Button>
           <Button asChild variant="ghost" size="sm" className="text-sm">
             <Link href="/register">SignUp</Link>
-          </Button> */}
+          </Button>
           {/* <Button size="sm" className="text-sm cursor-pointer">
             SignOut
           </Button> */}

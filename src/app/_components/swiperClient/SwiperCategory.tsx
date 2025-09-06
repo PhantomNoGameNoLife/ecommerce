@@ -1,5 +1,5 @@
 "use client";
-import { Categories } from '@/types/Categories'
+import { Categories } from '@/types/categories.t'
 import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';

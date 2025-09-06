@@ -1,12 +1,12 @@
 import React from "react";
 import ProductCard from "./_components/productCard/ProductCard";
-import { Product } from "@/types/product";
+import { Product } from "@/types/product.t";
 import { getAllProducts } from "@/apis/productsApi";
 import HomeSlider from "./_components/swiperClient/HomeSlider";
 import CategorySlider from "./_components/swiperClient/CategorySlider";
 
 const page = async () => {
-  const data = await getAllProducts();
+  const data:Product[] = await getAllProducts();
   return (
     <main className="mt-8 px-4 md:px-6">
       <HomeSlider />

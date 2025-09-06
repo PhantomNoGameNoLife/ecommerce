@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { Rating } from 'react-simple-star-rating'
-import { Product } from '@/types/product';
+import { Product } from '@/types/product.t';
 
 const ProductCard =  ({product}:{product:Product}) => {
   return (

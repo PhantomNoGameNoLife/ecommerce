@@ -11,8 +11,8 @@ const loading = () => {
           <Skeleton className="h-[400px] w-full rounded-xl" />
         </div>
         <div className="w-1/3 flex flex-col md:flex-row">
-          <Skeleton className="h-[200px] w-1/2 md:w-full rounded-xl" />
-          <Skeleton className="h-[200px] w-1/2 md:w-full rounded-xl" />
+          <Skeleton className="h-[200px] w-1/2 md:w-full md:block rounded-xl" />
+          <Skeleton className="h-[200px] w-1/2 md:w-full md:block rounded-xl" />
         </div>
       </section>
       {/* category slider*/}

@@ -1,11 +1,11 @@
 "use client";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination , Autoplay  } from 'swiper/modules';
+import { Pagination, Autoplay } from 'swiper/modules';
 import "swiper/css";
 import "swiper/css/pagination";
 import Image from 'next/image';
 
-const ProductSlider = ({ images } : { images: string[] }) => {
+const ProductSlider = ({ images }: { images: string[] }) => {
   return (
     <Swiper
       spaceBetween={0}
