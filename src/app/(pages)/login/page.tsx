@@ -32,7 +32,7 @@ const Login = () => {
     })
     if (res?.ok) {
       toast.success('login success');
-      window.location.href = res.url || '/'
+      window.location.href = '/'
     }
     else toast.error(res?.error || 'faild login')
   }

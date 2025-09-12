@@ -23,6 +23,7 @@ import Link from "next/link";
 import Image from "next/image";
 import ToggleTheme from "./toggletheme";
 import { usePathname } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -44,6 +45,7 @@ const socialIcon = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { data: session, status } = useSession()
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -98,11 +100,10 @@ export default function Navbar() {
                     <li key={index} className="w-full p-2">
                       <Link
                         href={link.href}
-                        className={`py-1.5 ${
-                          isActive(link.href)
+                        className={`py-1.5 ${isActive(link.href)
                             ? "text-primary border-b-2 border-primary"
                             : "text-muted-foreground hover:text-primary"
-                        }`}
+                          }`}
                       >
                         {link.label}
                       </Link>
@@ -128,11 +129,10 @@ export default function Navbar() {
                   <li key={index} className="px-1">
                     <Link
                       href={link.href}
-                      className={`text-muted-foreground hover:text-primary py-1.5 font-medium ${
-                        isActive(link.href)
+                      className={`text-muted-foreground hover:text-primary py-1.5 font-medium ${isActive(link.href)
                           ? "text-primary border-b-2 border-primary"
                           : "text-muted-foreground hover:text-primary"
-                      }`}
+                        }`}
                     >
                       {link.label}
                     </Link>
@@ -157,15 +157,19 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          <Button asChild variant="ghost" size="sm" className={`text-xs sm:text-sm px-1 md:px-3 hover:!bg-blue-600 ${pathname === '/login' ? 'bg-blue-600' : ''}`}>
-            <Link href="/login">SignIn</Link>
-          </Button>
-          <Button asChild variant="ghost" size="sm" className={`text-xs sm:text-sm px-1 md:px-3 hover:!bg-blue-600 ${pathname === '/register' ? 'bg-blue-600' : ''}`}>
-            <Link href="/register">SignUp</Link>
-          </Button>
-          {/* <Button size="sm" className="text-sm cursor-pointer">
+          {status === 'authenticated' && <Button onClick={()=>signOut({
+            callbackUrl: '/login'
+          })} size="sm" className="text-sm cursor-pointer">
             SignOut
-          </Button> */}
+          </Button> }
+          {status === 'unauthenticated' && <>
+            <Button asChild variant="ghost" size="sm" className={`text-xs sm:text-sm px-1 md:px-3 hover:!bg-blue-600 ${pathname === '/login' ? 'bg-blue-600' : ''}`}>
+              <Link href="/login">SignIn</Link>
+            </Button>
+            <Button asChild variant="ghost" size="sm" className={`text-xs sm:text-sm px-1 md:px-3 hover:!bg-blue-600 ${pathname === '/register' ? 'bg-blue-600' : ''}`}>
+              <Link href="/register">SignUp</Link>
+            </Button>
+          </> }
           <ToggleTheme />
         </div>
       </div>
