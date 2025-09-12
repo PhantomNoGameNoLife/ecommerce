@@ -18,13 +18,13 @@ export default function ToggleTheme() {
 
   if (!mounted) {
     return (
-      <div className="h-9 w-16 rounded-full bg-input/50 animate-pulse" />
+      <div className="h-8 w-16 md:h-9 md:w-18 rounded-full bg-input/50 animate-pulse" />
     );
   }
 
   return (
     <div>
-      <div className="relative inline-grid h-9 grid-cols-[1fr_1fr] items-center text-sm font-medium">
+      <div className="relative inline-grid h-8 w-16 md:h-9 md:w-18 grid-cols-[1fr_1fr] items-center text-sm font-medium">
         <Switch
           id={id}
           checked={theme === "dark"}

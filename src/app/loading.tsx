@@ -1,6 +1,5 @@
 import React from "react";
 import ProductCardSkeleton from "./_components/skeleton/ProductCardSkeleton";
-import CategorySkeleton from "./_components/skeleton/CategorySkeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const loading = () => {
@@ -17,7 +16,14 @@ const loading = () => {
         </div>
       </section>
       {/* category slider*/}
-      <CategorySkeleton />
+      <div className="w-full my-10 grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 h-[230px] overflow-y-hidden">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="flex flex-col items-center">
+            <Skeleton className="h-[200px] w-full rounded-xl" />
+            <Skeleton className="h-4 w-2/3 my-3 rounded" />
+          </div>
+        ))}
+      </div>
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 justify-self-center gap-4">
         {Array.from({ length: 10 }).map((_, index) => (
           <ProductCardSkeleton key={index} />

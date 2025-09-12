@@ -23,9 +23,9 @@ const HomeSlider = () => {
                         disableOnInteraction: false,
                     }}
                     loop >
-                    <SwiperSlide><div className="h-[400px] w-full relative"><Image className="object-fill md:object-cover rounded-s-xl" fill priority src={slide1} alt="slide 1" /></div></SwiperSlide>
-                    <SwiperSlide><div className="h-[400px] w-full relative"><Image className="object-fill md:object-cover rounded-s-xl" fill priority src={slide2} alt="slide 2" /></div></SwiperSlide>
-                    <SwiperSlide><div className="h-[400px] w-full relative"><Image className="object-fill md:object-cover rounded-s-xl" fill priority src={slide3} alt="slide 3" /></div></SwiperSlide>
+                    <SwiperSlide><div className="h-[300px] md:h-[400px] w-full relative"><Image className="md:object-cover rounded-xl md:rounded-s-xl" fill priority src={slide1} alt="slide 1" /></div></SwiperSlide>
+                    <SwiperSlide><div className="h-[300px] md:h-[400px] w-full relative"><Image className="md:object-cover rounded-xl md:rounded-s-xl" fill priority src={slide2} alt="slide 2" /></div></SwiperSlide>
+                    <SwiperSlide><div className="h-[300px] md:h-[400px] w-full relative"><Image className="md:object-cover rounded-xl md:rounded-s-xl" fill priority src={slide3} alt="slide 3" /></div></SwiperSlide>
                 </Swiper>
             </div>
             <div className="w-full md:w-1/3 rounded-e-xl hidden md:block">

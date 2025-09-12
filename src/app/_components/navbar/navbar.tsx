@@ -53,7 +53,7 @@ export default function Navbar() {
 
   return (
     <header className="border-b px-4 md:px-6">
-      <div className="flex h-16 items-center justify-between gap-4">
+      <div className="flex h-16 items-center justify-between gap-2 sm:gap-4">
         {/* Left side */}
         <div className="flex items-center gap-2">
           {/* Mobile menu trigger */}
@@ -157,10 +157,10 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          <Button asChild variant="ghost" size="sm" className="text-sm">
+          <Button asChild variant="ghost" size="sm" className={`text-xs sm:text-sm px-1 md:px-3 hover:!bg-blue-600 ${pathname === '/login' ? 'bg-blue-600' : ''}`}>
             <Link href="/login">SignIn</Link>
           </Button>
-          <Button asChild variant="ghost" size="sm" className="text-sm">
+          <Button asChild variant="ghost" size="sm" className={`text-xs sm:text-sm px-1 md:px-3 hover:!bg-blue-600 ${pathname === '/register' ? 'bg-blue-600' : ''}`}>
             <Link href="/register">SignUp</Link>
           </Button>
           {/* <Button size="sm" className="text-sm cursor-pointer">
