@@ -11,7 +11,17 @@ const SwiperCategory = ({ categories }: { categories: Categories[] }) => {
     return (
         <Swiper
             spaceBetween={0}
-            slidesPerView={5}
+            breakpoints={{
+                0: {
+                    slidesPerView: 2,
+                },
+                768: {
+                    slidesPerView: 3,
+                },
+                1024: {
+                    slidesPerView: 5,
+                },
+            }}
             modules={[Autoplay]}
             autoplay={{
                 delay: 2000,

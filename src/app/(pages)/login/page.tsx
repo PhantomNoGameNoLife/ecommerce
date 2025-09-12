@@ -6,17 +6,12 @@ import { Button } from '@/components/ui/button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema, type LoginSchemaType } from '@/schema/login.s'
 import { loginFields } from '@/types/authFailds.t'
-import type { UserRegister } from '@/types/user.t'
-import axios from 'axios'
 import { toast } from 'react-hot-toast'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Loader2 } from 'lucide-react'
-
+import { signIn } from 'next-auth/react'
 
 const Login = () => {
-  const router = useRouter();
-
   const form = useForm<LoginSchemaType>({
     defaultValues: {
       email: "",
@@ -25,18 +20,18 @@ const Login = () => {
     resolver: zodResolver(loginSchema)
   })
 
-  async function signIn(values: LoginSchemaType) {
-    try {
-      const { data }: { data: UserRegister } = await axios.post(`${process.env.NEXT_URL}/auth/signin`, values)
-      toast.success(data.message)
-      router.push('/')
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        toast.error(err.response?.data?.message)
-      } else {
-        toast.error("Unexpected error happened")
-      }
+  async function handleSignIn(values: LoginSchemaType) {
+    const res = await signIn('credentials', {
+      email: values.email,
+      password: values.password,
+      redirect: false,
+      callbackUrl: '/'
+    })
+    if (res?.ok) {
+      toast.success('login success');
+      window.location.href = res.url || '/'
     }
+    else toast.error(res?.error || 'faild login')
   }
 
   return (
@@ -47,7 +42,7 @@ const Login = () => {
             Sign in to your account
           </h1>
           <Form {...form}>
-            <form className="space-y-4 md:space-y-6" onSubmit={form.handleSubmit(signIn)}>
+            <form className="space-y-4 md:space-y-6" onSubmit={form.handleSubmit(handleSignIn)}>
               {loginFields.map((f, idx) => (
                 <FormField
                   key={idx}

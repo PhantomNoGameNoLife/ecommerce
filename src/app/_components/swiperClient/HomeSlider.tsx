@@ -23,14 +23,14 @@ const HomeSlider = () => {
                         disableOnInteraction: false,
                     }}
                     loop >
-                    <SwiperSlide><Image className="h-[400px] w-full object-cover rounded-s-xl" width={600} height={400} src={slide1} alt="slide 1" /></SwiperSlide>
-                    <SwiperSlide><Image className="h-[400px] w-full object-cover rounded-s-xl" width={600} height={400} src={slide2} alt="slide 2" /></SwiperSlide>
-                    <SwiperSlide><Image className="h-[400px] w-full object-cover rounded-s-xl" width={600} height={400} src={slide3} alt="slide 3" /></SwiperSlide>
+                    <SwiperSlide><div className="h-[400px] w-full relative"><Image className="object-fill md:object-cover rounded-s-xl" fill priority src={slide1} alt="slide 1" /></div></SwiperSlide>
+                    <SwiperSlide><div className="h-[400px] w-full relative"><Image className="object-fill md:object-cover rounded-s-xl" fill priority src={slide2} alt="slide 2" /></div></SwiperSlide>
+                    <SwiperSlide><div className="h-[400px] w-full relative"><Image className="object-fill md:object-cover rounded-s-xl" fill priority src={slide3} alt="slide 3" /></div></SwiperSlide>
                 </Swiper>
             </div>
-            <div className="w-full md:w-1/3 rounded-e-xl flex md:block">
-                <Image className="h-[200px] w-1/2 md:w-full object-cover rounded-e-xl" width={300} height={200} src={banner1} alt="banner 1" />
-                <Image className="h-[200px] w-1/2 md:w-full object-cover rounded-e-xl" width={300} height={200} src={banner2} alt="banner 2" />
+            <div className="w-full md:w-1/3 rounded-e-xl hidden md:block">
+                <div className="h-[200px] w-1/2 md:w-full relative"><Image className="object-cover rounded-e-xl" fill src={banner1} alt="banner 1" /></div>
+                <div className="h-[200px] w-1/2 md:w-full relative"><Image className="object-cover rounded-e-xl" fill src={banner2} alt="banner 2" /></div>
             </div>
         </section>
     );
