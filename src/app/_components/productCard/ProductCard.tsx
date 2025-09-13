@@ -9,8 +9,10 @@ import GlareHover from '@/components/GlareHover'
 import { useDispatch } from 'react-redux'
 import { addToCartLocal, ProductCart } from '@/redux/cartSlice'
 import toast from 'react-hot-toast'
+import { useSession } from 'next-auth/react'
 
 const ProductCard = ({ product }: { product: Product }) => {
+    const { status } = useSession()
     const dispatch = useDispatch()
 
     const productCart: ProductCart = {
@@ -19,6 +21,13 @@ const ProductCard = ({ product }: { product: Product }) => {
         price: product.price,
         title: product.title,
         image: product.imageCover,
+    }
+
+    function addToCart(productCart: ProductCart) {
+        if (status === 'unauthenticated') {
+            dispatch(addToCartLocal(productCart))
+            toast.success('product added to cart')
+        }
     }
 
     return (
@@ -49,10 +58,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                     </div>
                     <div className="flex items-center justify-between">
                         <span className="text-2xl font-bold text-primary">{product.price}<sub>EGP</sub></span>
-                        <Button size="sm" className='!cursor-pointer relative z-10' onClick={() => {
-                            dispatch(addToCartLocal(productCart))
-                            toast.success('product added to cart')
-                        }}>Add to Cart</Button>
+                        <Button size="sm" className='!cursor-pointer relative z-10' onClick={() => addToCart(productCart)}>Add to Cart</Button>
                     </div>
                 </div>
             </div>

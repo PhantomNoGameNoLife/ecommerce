@@ -24,12 +24,18 @@ import Image from "next/image";
 import ToggleTheme from "./toggletheme";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import { Badge } from "@/components/ui/badge";
+import type { RootState } from '@/redux/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getCartLocal } from "@/redux/cartSlice";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home", active: true },
   { href: "/cart", label: "Cart" },
-  { href: "/product", label: "Products" },
   { href: "/categories", label: "Categories" },
   { href: "/brands", label: "Brands" },
 ];
@@ -45,13 +51,18 @@ const socialIcon = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { data: session, status } = useSession()
+  const { status } = useSession()
+  const count = useSelector((state: RootState) => state.cart.numOfCartItems)
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(true);
 
-  const isActive = (href: string) => {
-    if (href === "/") return pathname === "/";
-    // to make ProductsDetails/[id] link active if user click on any product
-    return pathname.startsWith(href);
-  };
+  // get cart local
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      dispatch(getCartLocal())
+      setLoading(false)
+    }
+  }, [dispatch, status])
 
   return (
     <header className="border-b px-4 md:px-6">
@@ -62,7 +73,7 @@ export default function Navbar() {
           <Popover>
             <PopoverTrigger asChild>
               <Button
-                className="group size-8 md:hidden"
+                className="group size-8 md:hidden cursor-pointer"
                 variant="ghost"
                 size="icon"
               >
@@ -100,12 +111,15 @@ export default function Navbar() {
                     <li key={index} className="w-full p-2">
                       <Link
                         href={link.href}
-                        className={`py-1.5 ${isActive(link.href)
-                            ? "text-primary border-b-2 border-primary"
-                            : "text-muted-foreground hover:text-primary"
+                        className={`py-1.5 ${pathname === link.href
+                          ? "text-primary border-b-2 border-primary"
+                          : "text-muted-foreground hover:text-primary"
                           }`}
                       >
                         {link.label}
+                        {link.label === 'Cart' && <Badge className="h-5 min-w-5 inline-flex items-center ms-2 rounded-full px-1 font-mono tabular-nums">
+                          {loading ? <Loader2 className="animate-spin" /> : count}
+                        </Badge>}
                       </Link>
                     </li>
                   ))}
@@ -129,12 +143,15 @@ export default function Navbar() {
                   <li key={index} className="px-1">
                     <Link
                       href={link.href}
-                      className={`text-muted-foreground hover:text-primary py-1.5 font-medium ${isActive(link.href)
-                          ? "text-primary border-b-2 border-primary"
-                          : "text-muted-foreground hover:text-primary"
+                      className={`text-muted-foreground hover:text-primary py-1.5 font-medium relative ${pathname === link.href
+                        ? "text-primary border-b-2 border-primary"
+                        : "text-muted-foreground hover:text-primary"
                         }`}
                     >
                       {link.label}
+                      {link.label === 'Cart' && <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums absolute -top-2 -right-4">
+                        {loading ? <Loader2 className="animate-spin" /> : count}
+                      </Badge>}
                     </Link>
                   </li>
                 ))}
@@ -157,11 +174,17 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          {status === 'authenticated' && <Button onClick={()=>signOut({
+          {status === "loading" && (
+            <div className="flex gap-2">
+              <Skeleton className="h-8 w-[44px] md:w-[66px] rounded-md" />
+              <Skeleton className="h-8 w-[50px] md:w-[74px] rounded-md" />
+            </div>
+          )}
+          {status === 'authenticated' && <Button onClick={() => signOut({
             callbackUrl: '/login'
           })} size="sm" className="text-sm cursor-pointer">
             SignOut
-          </Button> }
+          </Button>}
           {status === 'unauthenticated' && <>
             <Button asChild variant="ghost" size="sm" className={`text-xs sm:text-sm px-1 md:px-3 hover:!bg-blue-600 ${pathname === '/login' ? 'bg-blue-600' : ''}`}>
               <Link href="/login">SignIn</Link>
@@ -169,7 +192,7 @@ export default function Navbar() {
             <Button asChild variant="ghost" size="sm" className={`text-xs sm:text-sm px-1 md:px-3 hover:!bg-blue-600 ${pathname === '/register' ? 'bg-blue-600' : ''}`}>
               <Link href="/register">SignUp</Link>
             </Button>
-          </> }
+          </>}
           <ToggleTheme />
         </div>
       </div>
