@@ -4,15 +4,19 @@ import { Card, CardContent } from '@/components/ui/card'
 import { useDebounce } from "use-debounce"
 import { Input } from '@/components/ui/input'
 import { removeFromCartHybrid, updateCartHybrid } from '@/redux/cartSlice'
-import { AppDispatch } from '@/redux/store'
+import { AppDispatch, RootState } from '@/redux/store'
 import { Product } from '@/types/cart.t'
-import { Heart, Minus, Plus, Trash2 } from 'lucide-react'
+import { Heart, Loader2, Minus, Plus, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const CartCard = ({ product }: { product: Product }) => {
+    const { actionCartLoading, remove } = useSelector((state: RootState) => state.cart)
+    const isLoading = actionCartLoading.includes(product.product.id)
+    const isLoadingRemove = remove.includes(product.product.id)
+
     const dispatch = useDispatch<AppDispatch>()
 
     const [value, setValue] = useState(product.count)
@@ -54,9 +58,12 @@ const CartCard = ({ product }: { product: Product }) => {
                                     Add to Favorites
                                 </Button>
 
-                                <Button variant="ghost" size="sm" onClick={() => dispatch(removeFromCartHybrid(product.product.id))} className="text-destructive hover:text-destructive/80 cursor-pointer">
-                                    <Trash2 className="me-1.5 size-5" />
-                                    Remove
+                                <Button variant="ghost" size="sm" disabled={isLoadingRemove} onClick={() => dispatch(removeFromCartHybrid(product.product.id))} className="text-destructive hover:text-destructive/80 cursor-pointer">
+                                    {isLoadingRemove ? <Loader2 className="animate-spin" /> : <>
+                                        <Trash2 className="me-1.5 size-5" />
+                                        Remove
+                                    </>
+                                    }
                                 </Button>
                             </div>
                         </div>
@@ -68,10 +75,11 @@ const CartCard = ({ product }: { product: Product }) => {
                             <Button
                                 variant="outline"
                                 size="icon"
+                                disabled={isLoading}
                                 onClick={() => setValue((c) => Math.max(c - 1, 0))}
                                 className="size-8 border-border bg-muted hover:bg-muted-foreground/20 cursor-pointer"
                             >
-                                <Minus className="size-4 text-foreground" />
+                                {isLoading ? <Loader2 className="animate-spin" /> : <Minus className="size-4 text-foreground" />}
                             </Button>
                             <Input
                                 type="text"
@@ -83,10 +91,11 @@ const CartCard = ({ product }: { product: Product }) => {
                             <Button
                                 variant="outline"
                                 size="icon"
+                                disabled={isLoading}
                                 onClick={() => setValue((c) => c + 1)}
                                 className="size-8 border-border bg-muted hover:bg-muted-foreground/20 cursor-pointer"
                             >
-                                <Plus className="size-4 text-foreground" />
+                                {isLoading ? <Loader2 className="animate-spin" /> : <Plus className="size-4 text-foreground" />}
                             </Button>
                         </div>
                     </div>

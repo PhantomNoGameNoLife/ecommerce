@@ -25,16 +25,20 @@ const emptyCart = (): Cart => ({
 });
 
 const initialState: Cart & {
+  loading: boolean;
+  actionCartLoading: string[];
+  remove: string[];
   error?: string | null;
   success?: string | null;
-  actionCartLoading: boolean;
-  loading: boolean;
+  clear: boolean;
 } = {
   ...emptyCart(),
   loading: true,
-  actionCartLoading: true,
+  actionCartLoading: [],
+  remove: [],
   error: null,
   success: null,
+  clear: false,
 };
 
 // Get User Cart
@@ -222,81 +226,100 @@ export const cartSlice = createSlice({
       })
       .addCase(fetchCartHybrid.fulfilled, (state, action) => {
         state.loading = false;
-        state.actionCartLoading = false;
         state.numOfCartItems = action.payload.numOfCartItems;
         state.data = action.payload.data;
       })
       .addCase(fetchCartHybrid.rejected, (state, action) => {
         state.loading = false;
-        state.actionCartLoading = false;
         state.error = action.payload as string;
       })
 
       // Add To Cart
-      .addCase(addToCartHybrid.pending, (state) => {
-        state.actionCartLoading = true;
+      .addCase(addToCartHybrid.pending, (state, action) => {
+        const productId = action.meta.arg.product.id;
+        state.actionCartLoading.push(productId);
         state.error = null;
         state.success = null;
       })
       .addCase(addToCartHybrid.fulfilled, (state, action) => {
-        state.actionCartLoading = false;
+        const productId = action.meta.arg.product.id;
+        state.actionCartLoading = state.actionCartLoading.filter(
+          (id) => id !== productId
+        );
         state.numOfCartItems = action.payload.numOfCartItems;
         state.data = action.payload.data;
-        state.success = "The product has been added to the cart";
+        state.success = "Product has been added to the cart";
       })
       .addCase(addToCartHybrid.rejected, (state, action) => {
-        state.actionCartLoading = false;
+        const productId = action.meta.arg.product.id;
+        state.actionCartLoading = state.actionCartLoading.filter(
+          (id) => id !== productId
+        );
         state.error = action.payload as string;
       })
 
       // Update Cart
-      .addCase(updateCartHybrid.pending, (state) => {
-        state.actionCartLoading = true;
+      .addCase(updateCartHybrid.pending, (state, action) => {
+        const productId = action.meta.arg.id;
+        state.actionCartLoading.push(productId);
         state.error = null;
         state.success = null;
       })
       .addCase(updateCartHybrid.fulfilled, (state, action) => {
-        state.actionCartLoading = false;
+        const productId = action.meta.arg.id;
+        state.actionCartLoading = state.actionCartLoading.filter(
+          (id) => id !== productId
+        );
         state.numOfCartItems = action.payload.numOfCartItems;
         state.data = action.payload.data;
         state.success = "Quantity updated successfully";
       })
       .addCase(updateCartHybrid.rejected, (state, action) => {
-        state.actionCartLoading = false;
+        const productId = action.meta.arg.id;
+        state.actionCartLoading = state.actionCartLoading.filter(
+          (id) => id !== productId
+        );
         state.error = action.payload as string;
       })
 
       // Remove Cart Item
-      .addCase(removeFromCartHybrid.pending, (state) => {
-        state.actionCartLoading = true;
+      .addCase(removeFromCartHybrid.pending, (state, action) => {
+        const productId = action.meta.arg;
+        state.remove.push(productId);
         state.error = null;
         state.success = null;
       })
       .addCase(removeFromCartHybrid.fulfilled, (state, action) => {
-        state.actionCartLoading = false;
+        const productId = action.meta.arg;
+        state.remove = state.remove.filter(
+          (id) => id !== productId
+        );
         state.numOfCartItems = action.payload.numOfCartItems;
         state.data = action.payload.data;
-        state.success = "The product has been removed from the cart";
+        state.success = "Product has been removed from the cart";
       })
       .addCase(removeFromCartHybrid.rejected, (state, action) => {
-        state.actionCartLoading = false;
+        const productId = action.meta.arg;
+        state.remove = state.remove.filter(
+          (id) => id !== productId
+        );
         state.error = action.payload as string;
       })
 
       // Clear Cart
       .addCase(clearCartHybrid.pending, (state) => {
-        state.actionCartLoading = true;
+        state.clear = true;
         state.error = null;
         state.success = null;
       })
       .addCase(clearCartHybrid.fulfilled, (state, action) => {
-        state.actionCartLoading = false;
+        state.clear = false;
         state.numOfCartItems = action.payload.numOfCartItems;
         state.data = action.payload.data;
         state.success = "The cart has been completely emptied ";
       })
       .addCase(clearCartHybrid.rejected, (state, action) => {
-        state.actionCartLoading = false;
+        state.clear = false;
         state.error = action.payload as string;
       });
   },

@@ -1,7 +1,7 @@
 "use server";
 
 export async function getAllProducts() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/products`, {
+  const response = await fetch(`${process.env.NEXT_URL}/products`, {
       next: { revalidate: 3600 * 24 * 14 },
     });
   const { data } = await response.json();
@@ -9,7 +9,7 @@ export async function getAllProducts() {
 }
 
 export async function getSingleProducts(id: string) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/products/${id}` , {
+  const response = await fetch(`${process.env.NEXT_URL}/products/${id}` , {
       next: { revalidate: 3600 * 24 * 14 },
     });
   const { data } = await response.json();

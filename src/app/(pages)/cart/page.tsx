@@ -1,9 +1,9 @@
 'use client'
 import CartCard from '@/app/_components/cartCard/CartCard'
+import { ClearCart } from '@/app/_components/dialogs/ClearCart'
 import CartSkeleton from '@/app/_components/skeleton/CartSkeleton'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { clearCartHybrid } from '@/redux/cartSlice'
 import { AppDispatch, RootState } from '@/redux/store'
 import { ArrowBigRight } from 'lucide-react'
 import Link from 'next/link'
@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const Cart = () => {
   const dispatch = useDispatch<AppDispatch>()
-  const { loading, numOfCartItems, data } = useSelector((state: RootState) => state.cart)
+  const { loading, numOfCartItems, data, clear } = useSelector((state: RootState) => state.cart)
 
   if (loading) return <CartSkeleton />
 
@@ -90,13 +90,7 @@ const Cart = () => {
                 >
                   Proceed to Checkout
                 </Button>
-                <Button
-                  onClick={() => dispatch(clearCartHybrid())}
-                  variant="destructive"
-                  className="w-full cursor-pointer"
-                >
-                  Clear Cart
-                </Button>
+                <ClearCart clear={clear} dispatch={dispatch} />
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-sm font-normal text-muted-foreground">or</span>
                   <Link

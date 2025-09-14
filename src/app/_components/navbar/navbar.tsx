@@ -49,7 +49,7 @@ const socialIcon = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { numOfCartItems, actionCartLoading, error, success } = useSelector((state: RootState) => state.cart)
+  const { numOfCartItems, loading, error, success } = useSelector((state: RootState) => state.cart)
   const heartCount = 0
   const dispatch = useDispatch<AppDispatch>()
 
@@ -197,7 +197,7 @@ export default function Navbar() {
             >
               <ShoppingCart />
               <Badge className="!size-4.5 rounded-full !p-1 font-mono tabular-nums absolute -top-1 -left-2">
-                {actionCartLoading ? <Loader2 className="animate-spin !size-4.5" /> : numOfCartItems}
+                {loading ? <Loader2 className="animate-spin !size-4.5" /> : numOfCartItems}
               </Badge>
             </Link>
             <UserMenu />
