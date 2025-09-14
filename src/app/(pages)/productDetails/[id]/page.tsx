@@ -1,8 +1,8 @@
 import { getSingleProducts } from "@/apis/productsApi";
-import ProductCounter from "@/app/_components/counter/ProductCounter";
+import ButtonAddToCartSingle from "@/app/_components/productCard/ButtonAddToCartSingle";
 import SwiperClient from "@/app/_components/swiperClient/ProductSlider";
 import { Button } from "@/components/ui/button";
-import { BadgeCheck , ShoppingCart } from "lucide-react";
+import { BadgeCheck } from "lucide-react";
 import React from "react";
 import { FaStar } from "react-icons/fa";
 
@@ -63,11 +63,7 @@ const ProductDetails = async ({ params }: { params: { id: string } }) => {
                 </li>
               </ul>
               <div className="flex items-center flex-col min-[400px]:flex-row gap-3 mb-3 min-[400px]:mb-8">
-                <ProductCounter />
-                <Button variant={"secondary"} className="w-7/12 min-[400px]:grow my-2 min-[400px]:my-0 py-6 px-5 rounded-full font-semibold text-lg flex items-center justify-center gap-2 shadow-sm cursor-pointer">
-                  <ShoppingCart />
-                  Add to cart
-                </Button>
+                <ButtonAddToCartSingle product={data} />
               </div>
               <Button className="text-center w-full px-5 py-7 rounded-[100px] flex items-center justify-center font-semibold text-lg shadow-sm cursor-pointer">
                 Buy Now

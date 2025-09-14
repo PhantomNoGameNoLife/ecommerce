@@ -23,19 +23,20 @@ import Link from "next/link";
 import Image from "next/image";
 import ToggleTheme from "./toggletheme";
 import { usePathname } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { Badge } from "@/components/ui/badge";
-import type { RootState } from '@/redux/store'
+import type { AppDispatch, RootState } from '@/redux/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { getCartLocal } from "@/redux/cartSlice";
+import { Heart, Loader2, ShoppingCart } from "lucide-react";
+import { clearCartLocal, fetchCartHybrid, getCartLocal } from "@/redux/cartSlice";
+import UserMenu from "@/components/navbar-components/user-menu";
+import { AddToCart } from "@/apis/cartApi";
+import toast from "react-hot-toast";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home", active: true },
-  { href: "/cart", label: "Cart" },
   { href: "/categories", label: "Categories" },
   { href: "/brands", label: "Brands" },
 ];
@@ -51,18 +52,17 @@ const socialIcon = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { status } = useSession()
-  const count = useSelector((state: RootState) => state.cart.numOfCartItems)
-  const dispatch = useDispatch()
-  const [loading, setLoading] = useState(true);
+  const cart = useSelector((state: RootState) => state.cart)
+  const heartCount = 0
+  const dispatch = useDispatch<AppDispatch>()
 
-  // get cart local
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      dispatch(getCartLocal())
-      setLoading(false)
+    async function getCart () {
+      await dispatch(fetchCartHybrid());
     }
-  }, [dispatch, status])
+    getCart()
+  }, [dispatch]);
+
 
   return (
     <header className="border-b px-4 md:px-6">
@@ -117,9 +117,6 @@ export default function Navbar() {
                           }`}
                       >
                         {link.label}
-                        {link.label === 'Cart' && <Badge className="h-5 min-w-5 inline-flex items-center ms-2 rounded-full px-1 font-mono tabular-nums">
-                          {loading ? <Loader2 className="animate-spin" /> : count}
-                        </Badge>}
                       </Link>
                     </li>
                   ))}
@@ -149,9 +146,6 @@ export default function Navbar() {
                         }`}
                     >
                       {link.label}
-                      {link.label === 'Cart' && <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums absolute -top-2 -right-4">
-                        {loading ? <Loader2 className="animate-spin" /> : count}
-                      </Badge>}
                     </Link>
                   </li>
                 ))}
@@ -160,7 +154,7 @@ export default function Navbar() {
           </div>
         </div>
         {/* Right side */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-6">
           <ul className="hidden items-center gap-2 sm:flex">
             {socialIcon.map((icon, idx) => (
               <li key={idx}>
@@ -174,26 +168,34 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          {status === "loading" && (
-            <div className="flex gap-2">
-              <Skeleton className="h-8 w-[44px] md:w-[66px] rounded-md" />
-              <Skeleton className="h-8 w-[50px] md:w-[74px] rounded-md" />
-            </div>
-          )}
-          {status === 'authenticated' && <Button onClick={() => signOut({
-            callbackUrl: '/login'
-          })} size="sm" className="text-sm cursor-pointer">
-            SignOut
-          </Button>}
-          {status === 'unauthenticated' && <>
-            <Button asChild variant="ghost" size="sm" className={`text-xs sm:text-sm px-1 md:px-3 hover:!bg-blue-600 ${pathname === '/login' ? 'bg-blue-600' : ''}`}>
-              <Link href="/login">SignIn</Link>
-            </Button>
-            <Button asChild variant="ghost" size="sm" className={`text-xs sm:text-sm px-1 md:px-3 hover:!bg-blue-600 ${pathname === '/register' ? 'bg-blue-600' : ''}`}>
-              <Link href="/register">SignUp</Link>
-            </Button>
-          </>}
-          <ToggleTheme />
+          <div className="flex items-center gap-3">
+            <Link
+              href='/wishlist'
+              className={`text-muted-foreground hover:text-primary py-1.5 font-medium relative ${pathname === '/wishlist'
+                ? "text-primary"
+                : "text-muted-foreground hover:text-primary"
+                }`}
+            >
+              <Heart />
+              <Badge className="!size-4.5 rounded-full !p-1 font-mono tabular-nums absolute -top-1 -left-2">
+                {cart.loading  ? <Loader2 className="animate-spin !size-4.5" /> : heartCount}
+              </Badge>
+            </Link>
+            <Link
+              href='/cart'
+              className={`text-muted-foreground hover:text-primary py-1.5 font-medium relative ${pathname === '/cart'
+                ? "text-primary"
+                : "text-muted-foreground hover:text-primary"
+                }`}
+            >
+              <ShoppingCart />
+              <Badge className="!size-4.5 rounded-full !p-1 font-mono tabular-nums absolute -top-1 -left-2">
+                {cart.loading ? <Loader2 className="animate-spin !size-4.5" /> : cart.numOfCartItems}
+              </Badge>
+            </Link>
+            <UserMenu />
+            <ToggleTheme />
+          </div>
         </div>
       </div>
     </header>

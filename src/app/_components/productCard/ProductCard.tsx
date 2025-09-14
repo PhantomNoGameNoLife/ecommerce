@@ -1,35 +1,13 @@
 'use client'
-import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { Rating } from 'react-simple-star-rating'
 import { Product } from '@/types/product.t';
 import GlareHover from '@/components/GlareHover'
-import { useDispatch } from 'react-redux'
-import { addToCartLocal, ProductCart } from '@/redux/cartSlice'
-import toast from 'react-hot-toast'
-import { useSession } from 'next-auth/react'
+import AddBtnCart from './AddBtnCart'
 
 const ProductCard = ({ product }: { product: Product }) => {
-    const { status } = useSession()
-    const dispatch = useDispatch()
-
-    const productCart: ProductCart = {
-        id: product.id,
-        count: 1,
-        price: product.price,
-        title: product.title,
-        image: product.imageCover,
-    }
-
-    function addToCart(productCart: ProductCart) {
-        if (status === 'unauthenticated') {
-            dispatch(addToCartLocal(productCart))
-            toast.success('product added to cart')
-        }
-    }
-
     return (
         <GlareHover
             glareColor="var(--glare)"
@@ -58,7 +36,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                     </div>
                     <div className="flex items-center justify-between">
                         <span className="text-2xl font-bold text-primary">{product.price}<sub>EGP</sub></span>
-                        <Button size="sm" className='!cursor-pointer relative z-10' onClick={() => addToCart(productCart)}>Add to Cart</Button>
+                        <AddBtnCart product={product} isHome={true} />
                     </div>
                 </div>
             </div>
