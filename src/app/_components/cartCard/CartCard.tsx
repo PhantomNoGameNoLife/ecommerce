@@ -5,14 +5,14 @@ import { useDebounce } from "use-debounce"
 import { Input } from '@/components/ui/input'
 import { removeFromCartHybrid, updateCartHybrid } from '@/redux/cartSlice'
 import { AppDispatch } from '@/redux/store'
-import { ProductCart } from '@/types/cartRedux.t'
+import { Product } from '@/types/cart.t'
 import { Heart, Minus, Plus, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
-const CartCard = ({ product }: { product: ProductCart }) => {
+const CartCard = ({ product }: { product: Product }) => {
     const dispatch = useDispatch<AppDispatch>()
 
     const [value, setValue] = useState(product.count)
@@ -21,7 +21,7 @@ const CartCard = ({ product }: { product: ProductCart }) => {
 
     useEffect(() => {
         if (debouncedValue !== product.count) {
-            dispatch(updateCartHybrid({ id: product.id, count: debouncedValue - product.count }))
+            dispatch(updateCartHybrid({ id: product.product.id, count: debouncedValue - product.count }))
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedValue])
@@ -31,20 +31,21 @@ const CartCard = ({ product }: { product: ProductCart }) => {
             <CardContent className="p-4 md:p-6">
                 <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                     <div className="flex items-center gap-4 md:gap-6 flex-col md:flex-row">
-                        <Link href={`/productDetails/${product.id}`} className="shrink-0">
+                        <Link href={`/productDetails/${product.product.id}`} className="shrink-0">
                             <div className="relative size-20 mx-auto">
                                 <Image
                                     className="object-cover hover:scale-105 transition-all duration-500"
                                     fill
-                                    src={product.image}
-                                    alt={product.title}
+                                    src={product.product.imageCover!}
+                                    alt={product.product.title!}
+                                    sizes="80px"
                                 />
                             </div>
                         </Link>
 
                         <div className="w-full min-w-0 flex-1 space-y-4 md:max-w-md flex flex-col">
-                            <Link href={`/productDetails/${product.id}`} className="text-base font-medium text-foreground hover:underline">
-                                {product.title}
+                            <Link href={`/productDetails/${product.product.id}`} className="text-base font-medium text-foreground hover:underline">
+                                {product.product.title}
                             </Link>
                             <p className="text-base font-bold text-foreground">{product.price}<sub>EGP</sub></p>
                             <div className="flex items-center gap-4 justify-center md:justify-start">
@@ -53,7 +54,7 @@ const CartCard = ({ product }: { product: ProductCart }) => {
                                     Add to Favorites
                                 </Button>
 
-                                <Button variant="ghost" size="sm" onClick={() => dispatch(removeFromCartHybrid(product.id))} className="text-destructive hover:text-destructive/80 cursor-pointer">
+                                <Button variant="ghost" size="sm" onClick={() => dispatch(removeFromCartHybrid(product.product.id))} className="text-destructive hover:text-destructive/80 cursor-pointer">
                                     <Trash2 className="me-1.5 size-5" />
                                     Remove
                                 </Button>
@@ -67,7 +68,7 @@ const CartCard = ({ product }: { product: ProductCart }) => {
                             <Button
                                 variant="outline"
                                 size="icon"
-                                onClick={() => setValue((c) => c - 1)}
+                                onClick={() => setValue((c) => Math.max(c - 1, 0))}
                                 className="size-8 border-border bg-muted hover:bg-muted-foreground/20 cursor-pointer"
                             >
                                 <Minus className="size-4 text-foreground" />

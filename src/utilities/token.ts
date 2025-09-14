@@ -20,6 +20,5 @@ export async function getMyToken(): Promise<string | undefined> {
     secret: process.env.NEXTAUTH_SECRET!,
   })) as MyJWT | null;
 
-  console.log(decoded?.token);
   return decoded?.token;
 }

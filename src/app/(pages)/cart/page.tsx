@@ -59,7 +59,7 @@ const Cart = () => {
         <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
           {/* Products list */}
           <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl space-y-4">
-            {data?.products.slice().reverse().map((pro) => <CartCard key={pro.id} product={pro} />)}
+            {data?.products.slice().reverse().map((pro) => <CartCard key={pro.product.id} product={pro} />)}
           </div>
           {/* Order summary */}
           <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
@@ -75,8 +75,13 @@ const Cart = () => {
                   </dl>
 
                   <dl className="flex items-center justify-between gap-4">
+                    <dt className="text-base font-normal text-muted-foreground">Total number of items</dt>
+                    <dd className="text-base font-medium text-foreground">{data.products.reduce((total, product) => total + product.count, 0)}</dd>
+                  </dl>
+
+                  <dl className="flex items-center justify-between gap-4">
                     <dt className="text-base font-normal text-muted-foreground">Total Price</dt>
-                    <dd className="text-base font-medium text-green-600">{data.totalCartPrice}</dd>
+                    <dd className="text-base font-medium text-green-600">{data.totalCartPrice}<sub>EGP</sub></dd>
                   </dl>
                 </div>
                 <Button

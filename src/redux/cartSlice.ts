@@ -1,4 +1,4 @@
-import { Cart, ProductCart } from "@/types/cartRedux.t";
+import { Cart, Product } from "@/types/cart.t";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   AddToCart,
@@ -9,19 +9,30 @@ import {
 } from "@/apis/cartApi";
 import { getSession } from "next-auth/react";
 
+const emptyCart = (): Cart => ({
+  status: "",
+  cartId: "",
+  numOfCartItems: 0,
+  data: {
+    _id: "",
+    cartOwner: "",
+    products: [],
+    createdAt: "",
+    updatedAt: "",
+    __v: 0,
+    totalCartPrice: 0,
+  },
+});
+
 const initialState: Cart & {
   error?: string | null;
   success?: string | null;
   actionCartLoading: boolean;
   loading: boolean;
 } = {
+  ...emptyCart(),
   loading: true,
   actionCartLoading: true,
-  numOfCartItems: 0,
-  data: {
-    products: [],
-    totalCartPrice: 0,
-  },
   error: null,
   success: null,
 };
@@ -34,14 +45,8 @@ export const fetchCartHybrid = createAsyncThunk<Cart>(
       const session = await getSession();
       if (!session) {
         const products = localStorage.getItem("products");
-        if (products) {
-          return JSON.parse(products) as Cart;
-        }
-        return {
-          loading: false,
-          numOfCartItems: 0,
-          data: { products: [], totalCartPrice: 0 },
-        };
+        if (products) return JSON.parse(products) as Cart;
+        return emptyCart();
       }
 
       const localData = localStorage.getItem("products");
@@ -50,7 +55,7 @@ export const fetchCartHybrid = createAsyncThunk<Cart>(
 
         for (const product of localCart.data.products) {
           for (let i = 0; i < product.count; i++) {
-            await AddToCart(product.id);
+            await AddToCart(product.product.id);
           }
         }
 
@@ -70,7 +75,7 @@ export const fetchCartHybrid = createAsyncThunk<Cart>(
 );
 
 // Add To Cart
-export const addToCartHybrid = createAsyncThunk<Cart, ProductCart>(
+export const addToCartHybrid = createAsyncThunk<Cart, Product>(
   "cart/addToCartHybrid",
   async (product, { rejectWithValue }) => {
     try {
@@ -78,24 +83,18 @@ export const addToCartHybrid = createAsyncThunk<Cart, ProductCart>(
       if (!session) {
         // Guest → save to localStorage
         const products = localStorage.getItem("products");
-        const state: Cart = products
-          ? JSON.parse(products)
-          : {
-              loading: false,
-              numOfCartItems: 0,
-              data: { products: [], totalCartPrice: 0 },
-            };
+        const state: Cart = products ? JSON.parse(products) : emptyCart();
 
         const existingProduct = state.data.products.find(
-          (p) => p.id === product.id
+          (p) => p.product.id === product.product.id
         );
         if (existingProduct) {
           existingProduct.count += product.count;
         } else {
           state.data.products.push(product);
+          state.numOfCartItems += 1;
         }
 
-        state.numOfCartItems += product.count;
         state.data.totalCartPrice += product.price * product.count;
 
         localStorage.setItem("products", JSON.stringify(state));
@@ -103,7 +102,8 @@ export const addToCartHybrid = createAsyncThunk<Cart, ProductCart>(
       }
 
       // Auth → call API
-      const data = await AddToCart(product.id);
+      await AddToCart(product.product.id);
+      const data = await GetUserCart();
       return data;
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -123,22 +123,19 @@ export const updateCartHybrid = createAsyncThunk<
     const session = await getSession();
     if (!session) {
       const products = localStorage.getItem("products");
-      const state: Cart = products
-        ? JSON.parse(products)
-        : {
-            loading: false,
-            numOfCartItems: 0,
-            data: { products: [], totalCartPrice: 0 },
-          };
+      const state: Cart = products ? JSON.parse(products) : emptyCart();
 
-      const product = state.data.products.find((p) => p.id === id);
+      const product = state.data.products.find((p) => p.product.id === id);
       if (product) {
-        state.numOfCartItems += count;
         product.count += count;
         state.data.totalCartPrice += product.price * count;
 
-        if (product.count <= 0)
-          state.data.products = state.data.products.filter((p) => p.id !== id);
+        if (product.count <= 0) {
+          state.data.products = state.data.products.filter(
+            (p) => p.product.id !== id
+          );
+          state.numOfCartItems -= 1;
+        }
       }
 
       localStorage.setItem("products", JSON.stringify(state));
@@ -162,19 +159,15 @@ export const removeFromCartHybrid = createAsyncThunk<Cart, string>(
       const session = await getSession();
       if (!session) {
         const products = localStorage.getItem("products");
-        const state: Cart = products
-          ? JSON.parse(products)
-          : {
-              loading: false,
-              numOfCartItems: 0,
-              data: { products: [], totalCartPrice: 0 },
-            };
+        const state: Cart = products ? JSON.parse(products) : emptyCart();
 
-        const product = state.data.products.find((p) => p.id === id);
+        const product = state.data.products.find((p) => p.product.id === id);
         if (product) {
-          state.numOfCartItems -= product.count;
+          state.numOfCartItems -= 1;
           state.data.totalCartPrice -= product.price * product.count;
-          state.data.products = state.data.products.filter((p) => p.id !== id);
+          state.data.products = state.data.products.filter(
+            (p) => p.product.id !== id
+          );
         }
 
         localStorage.setItem("products", JSON.stringify(state));
@@ -198,15 +191,11 @@ export const clearCartHybrid = createAsyncThunk<Cart>(
       const session = await getSession();
       if (!session) {
         localStorage.removeItem("products");
-        return {
-          loading: false,
-          numOfCartItems: 0,
-          data: { products: [], totalCartPrice: 0 },
-        };
+        return emptyCart();
       }
 
-      const data = await ClearCart();
-      return data;
+      await ClearCart();
+      return emptyCart();
     } catch (err: unknown) {
       if (err instanceof Error) return rejectWithValue(err.message);
       return rejectWithValue("Something went wrong");
