@@ -1,5 +1,4 @@
 export interface Cart {
-  loading: boolean;
   numOfCartItems: number;
   data: Data;
 }

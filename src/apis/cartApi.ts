@@ -1,8 +1,24 @@
 "use server";
 
-import { Cart } from "@/types/cartRedux";
+import { Cart } from "@/types/cartRedux.t";
 import { getMyToken } from "@/utilities/token";
 import axios from "axios";
+
+export async function GetUserCart() {
+  const token = await getMyToken();
+
+  if (!token) {
+    throw new Error("No token found. Please login first.");
+  }
+
+  const res = await fetch(`${process.env.NEXT_URL}/cart`, {
+    headers: { token: token },
+  });
+
+  const { data }: { data: Cart } = await res.json();
+
+  return data;
+}
 
 export async function AddToCart(id: string) {
   const token = await getMyToken();
@@ -22,18 +38,54 @@ export async function AddToCart(id: string) {
   return data;
 }
 
-export async function GetUserCart() {
+export async function UpdateCartQuantity(id: string , count:number) {
   const token = await getMyToken();
 
   if (!token) {
     throw new Error("No token found. Please login first.");
   }
 
-  const res = await fetch(`${process.env.NEXT_URL}/cart`, {
-    headers: { token: token },
-  });
+  const { data }: { data: Cart } = await axios.put(
+    `${process.env.NEXT_URL}/cart/${id}`,
+    { count: count },
+    {
+      headers: { token: token },
+    }
+  );
 
-  const { data }: { data: Cart } = await res.json();
+  return data;
+}
+
+export async function RemoveCartItem(id: string) {
+  const token = await getMyToken();
+
+  if (!token) {
+    throw new Error("No token found. Please login first.");
+  }
+
+  const { data }: { data: Cart } = await axios.delete(
+    `${process.env.NEXT_URL}/cart/${id}`,
+    {
+      headers: { token: token },
+    }
+  );
+
+  return data;
+}
+
+export async function ClearCart() {
+  const token = await getMyToken();
+
+  if (!token) {
+    throw new Error("No token found. Please login first.");
+  }
+
+  const { data }: { data: Cart } = await axios.delete(
+    `${process.env.NEXT_URL}/cart`,
+    {
+      headers: { token: token },
+    }
+  );
 
   return data;
 }

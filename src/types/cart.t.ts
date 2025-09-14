@@ -4,6 +4,7 @@ export interface Cart {
   numOfCartItems: number
   cartId: string
   data: Data
+  error: null,
 }
 
 export interface Data {

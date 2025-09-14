@@ -3,19 +3,19 @@ import CartCard from '@/app/_components/cartCard/CartCard'
 import CartSkeleton from '@/app/_components/skeleton/CartSkeleton'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { clearCartLocal } from '@/redux/cartSlice'
-import { RootState } from '@/redux/store'
+import { clearCartHybrid } from '@/redux/cartSlice'
+import { AppDispatch, RootState } from '@/redux/store'
 import { ArrowBigRight } from 'lucide-react'
 import Link from 'next/link'
 import { useDispatch, useSelector } from 'react-redux'
 
 const Cart = () => {
-  const dispatch = useDispatch()
-  const cartState = useSelector((state: RootState) => state.cart)
+  const dispatch = useDispatch<AppDispatch>()
+  const { loading, numOfCartItems, data } = useSelector((state: RootState) => state.cart)
 
-  if (cartState.loading) return <CartSkeleton />
+  if (loading) return <CartSkeleton />
 
-  if (cartState.numOfCartItems === 0) {
+  if (numOfCartItems === 0) {
     return (
       <section className="bg-background h-[calc(100dvh-65px)] antialiased flex items-center justify-center">
         <div className="text-center space-y-6">
@@ -59,7 +59,7 @@ const Cart = () => {
         <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
           {/* Products list */}
           <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl space-y-4">
-            {cartState?.data.products.slice().reverse().map((pro) => <CartCard key={pro.id} product={pro} />)}
+            {data?.products.slice().reverse().map((pro) => <CartCard key={pro.id} product={pro} />)}
           </div>
           {/* Order summary */}
           <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
@@ -71,12 +71,12 @@ const Cart = () => {
                 <div className="space-y-2 border-b border-border pb-2">
                   <dl className="flex items-center justify-between gap-4">
                     <dt className="text-base font-normal text-muted-foreground">Number of Items</dt>
-                    <dd className="text-base font-medium text-foreground">{cartState?.numOfCartItems}</dd>
+                    <dd className="text-base font-medium text-foreground">{numOfCartItems}</dd>
                   </dl>
 
                   <dl className="flex items-center justify-between gap-4">
                     <dt className="text-base font-normal text-muted-foreground">Total Price</dt>
-                    <dd className="text-base font-medium text-green-600">{cartState?.data.totalCartPrice}</dd>
+                    <dd className="text-base font-medium text-green-600">{data.totalCartPrice}</dd>
                   </dl>
                 </div>
                 <Button
@@ -86,7 +86,7 @@ const Cart = () => {
                   Proceed to Checkout
                 </Button>
                 <Button
-                  onClick={() => dispatch(clearCartLocal())}
+                  onClick={() => dispatch(clearCartHybrid())}
                   variant="destructive"
                   className="w-full cursor-pointer"
                 >

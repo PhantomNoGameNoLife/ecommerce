@@ -1,21 +1,30 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { useDebounce } from "use-debounce"
 import { Input } from '@/components/ui/input'
-import { ProductCart, removeFromCartLocal, changeProductCountLocal } from '@/redux/cartSlice'
+import { removeFromCartHybrid, updateCartHybrid } from '@/redux/cartSlice'
+import { AppDispatch } from '@/redux/store'
+import { ProductCart } from '@/types/cartRedux.t'
 import { Heart, Minus, Plus, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 const CartCard = ({ product }: { product: ProductCart }) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(e.target.value) || 1
-        dispatch(changeProductCountLocal({ id: product.id, count: value - product.count }))
-    }
+    const [value, setValue] = useState(product.count)
+
+    const [debouncedValue] = useDebounce(value, 500)
+
+    useEffect(() => {
+        if (debouncedValue !== product.count) {
+            dispatch(updateCartHybrid({ id: product.id, count: debouncedValue - product.count }))
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedValue])
 
     return (
         <Card className="border-border bg-card text-card-foreground shadow-sm text-center md:text-start">
@@ -44,7 +53,7 @@ const CartCard = ({ product }: { product: ProductCart }) => {
                                     Add to Favorites
                                 </Button>
 
-                                <Button variant="ghost" size="sm" onClick={() => dispatch(removeFromCartLocal({ id: product.id }))} className="text-destructive hover:text-destructive/80 cursor-pointer">
+                                <Button variant="ghost" size="sm" onClick={() => dispatch(removeFromCartHybrid(product.id))} className="text-destructive hover:text-destructive/80 cursor-pointer">
                                     <Trash2 className="me-1.5 size-5" />
                                     Remove
                                 </Button>
@@ -58,7 +67,7 @@ const CartCard = ({ product }: { product: ProductCart }) => {
                             <Button
                                 variant="outline"
                                 size="icon"
-                                onClick={() => dispatch(changeProductCountLocal({ id: product.id, count: -1 }))}
+                                onClick={() => setValue((c) => c - 1)}
                                 className="size-8 border-border bg-muted hover:bg-muted-foreground/20 cursor-pointer"
                             >
                                 <Minus className="size-4 text-foreground" />
@@ -67,13 +76,13 @@ const CartCard = ({ product }: { product: ProductCart }) => {
                                 type="text"
                                 id="counter-input"
                                 className="w-12 text-center bg-transparent border-border text-foreground focus:ring-ring"
-                                value={product.count}
-                                onChange={handleInputChange}
+                                value={value}
+                                onChange={(e) => setValue(parseInt(e.target.value) || 1)}
                             />
                             <Button
                                 variant="outline"
                                 size="icon"
-                                onClick={() => dispatch(changeProductCountLocal({ id: product.id, count: 1 }))}
+                                onClick={() => setValue((c) => c + 1)}
                                 className="size-8 border-border bg-muted hover:bg-muted-foreground/20 cursor-pointer"
                             >
                                 <Plus className="size-4 text-foreground" />

@@ -23,17 +23,14 @@ import Link from "next/link";
 import Image from "next/image";
 import ToggleTheme from "./toggletheme";
 import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { Badge } from "@/components/ui/badge";
 import type { AppDispatch, RootState } from '@/redux/store'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Heart, Loader2, ShoppingCart } from "lucide-react";
-import { clearCartLocal, fetchCartHybrid, getCartLocal } from "@/redux/cartSlice";
+import { clearStatus, fetchCartHybrid } from "@/redux/cartSlice";
 import UserMenu from "@/components/navbar-components/user-menu";
-import { AddToCart } from "@/apis/cartApi";
 import toast from "react-hot-toast";
-
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home", active: true },
@@ -52,17 +49,27 @@ const socialIcon = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const cart = useSelector((state: RootState) => state.cart)
+  const { numOfCartItems, actionCartLoading, error, success } = useSelector((state: RootState) => state.cart)
   const heartCount = 0
   const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
-    async function getCart () {
+    async function getCart() {
       await dispatch(fetchCartHybrid());
     }
     getCart()
   }, [dispatch]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearStatus());
+    }
+    if (success) {
+      toast.success(success);
+      dispatch(clearStatus());
+    }
+  }, [error, success, dispatch]);
 
   return (
     <header className="border-b px-4 md:px-6">
@@ -178,7 +185,7 @@ export default function Navbar() {
             >
               <Heart />
               <Badge className="!size-4.5 rounded-full !p-1 font-mono tabular-nums absolute -top-1 -left-2">
-                {cart.loading  ? <Loader2 className="animate-spin !size-4.5" /> : heartCount}
+                {false ? <Loader2 className="animate-spin !size-4.5" /> : heartCount}
               </Badge>
             </Link>
             <Link
@@ -190,7 +197,7 @@ export default function Navbar() {
             >
               <ShoppingCart />
               <Badge className="!size-4.5 rounded-full !p-1 font-mono tabular-nums absolute -top-1 -left-2">
-                {cart.loading ? <Loader2 className="animate-spin !size-4.5" /> : cart.numOfCartItems}
+                {actionCartLoading ? <Loader2 className="animate-spin !size-4.5" /> : numOfCartItems}
               </Badge>
             </Link>
             <UserMenu />
