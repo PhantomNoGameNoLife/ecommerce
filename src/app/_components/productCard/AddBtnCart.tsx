@@ -20,7 +20,7 @@ const AddBtnCart = ({ product, counter, isHome }: { product: Product, counter?: 
     }
 
     return (
-        <Button size={isHome ? "sm" : "default"} variant={isHome ? "default" : "secondary"} disabled={isLoading} onClick={() => dispatch(addToCartHybrid(productCart))} className={`!cursor-pointer ${isHome ? "relative z-10" : "w-7/12 min-[400px]:grow my-2 min-[400px]:my-0 py-6 px-5 rounded-full font-semibold text-lg flex items-center justify-center gap-2 shadow-sm"}`}>
+        <Button size={isHome ? "sm" : "default"} variant={isHome ? "default" : "secondary"} disabled={isLoading} onClick={() => dispatch(addToCartHybrid(productCart))} className={`!cursor-pointer ${isHome ? "relative z-10 flex-1" : "w-7/12 min-[400px]:grow my-2 min-[400px]:my-0 py-6 px-5 rounded-full font-semibold text-lg flex items-center justify-center gap-2 shadow-sm"}`}>
             {isLoading ? <Loader2 className="animate-spin" /> : <>
                 {!isHome && <ShoppingCart />}
                 Add to cart

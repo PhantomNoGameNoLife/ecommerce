@@ -11,6 +11,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import AddBtnWishlist from '../productCard/AddBtnWishlist'
 
 const CartCard = ({ product }: { product: Product }) => {
     const { actionCartLoading, remove } = useSelector((state: RootState) => state.cart)
@@ -53,10 +54,7 @@ const CartCard = ({ product }: { product: Product }) => {
                             </Link>
                             <p className="text-base font-bold text-foreground">{product.price}<sub>EGP</sub></p>
                             <div className="flex items-center gap-4 justify-center md:justify-start">
-                                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground cursor-pointer">
-                                    <Heart className="me-1.5 size-5" />
-                                    Add to Favorites
-                                </Button>
+                               <AddBtnWishlist product={{id: product.product.id , imageCover: product.product.imageCover! , price: product.price , title:product.product.title! }} />
 
                                 <Button variant="ghost" size="sm" disabled={isLoadingRemove} onClick={() => dispatch(removeFromCartHybrid(product.product.id))} className="text-destructive hover:text-destructive/80 cursor-pointer">
                                     {isLoadingRemove ? <Loader2 className="animate-spin" /> : <>

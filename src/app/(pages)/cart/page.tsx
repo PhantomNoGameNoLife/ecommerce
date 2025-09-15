@@ -1,55 +1,40 @@
 'use client'
 import CartCard from '@/app/_components/cartCard/CartCard'
 import { ClearCart } from '@/app/_components/dialogs/ClearCart'
+import EmptyCart from '@/app/_components/emptyPages/EmptyCart'
 import CartSkeleton from '@/app/_components/skeleton/CartSkeleton'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { AppDispatch, RootState } from '@/redux/store'
 import { ArrowBigRight } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 
 const Cart = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { loading, numOfCartItems, data, clear } = useSelector((state: RootState) => state.cart)
+  const { status } = useSession()
+  const router = useRouter()
+
+  function handleOrder() {
+    if (status === 'unauthenticated') {
+      router.push('/login')
+      toast('Please login first to make an order')
+    }
+    else if (status === 'authenticated') {
+      router.push('/allorders')
+    }
+  }
 
   if (loading) return <CartSkeleton />
 
   if (numOfCartItems === 0) {
-    return (
-      <section className="bg-background h-[calc(100dvh-65px)] antialiased flex items-center justify-center">
-        <div className="text-center space-y-6">
-          <div className="flex justify-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-24 w-24 text-muted-foreground"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m13-9l2 9m-5-9v9"
-              />
-            </svg>
-          </div>
-
-          <h2 className="text-2xl font-semibold text-foreground">Your cart is empty</h2>
-          <p className="text-muted-foreground text-sm">
-            Looks like you haven’t added anything to your cart yet.
-          </p>
-
-          <Link href="/" passHref>
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer">
-              Continue Shopping
-            </Button>
-          </Link>
-        </div>
-      </section>
-    )
+    return <EmptyCart />
   }
+
 
   return (
     <section className="bg-background py-8 antialiased md:py-16">
@@ -87,6 +72,7 @@ const Cart = () => {
                 <Button
                   variant="default"
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
+                  onClick={handleOrder}
                 >
                   Proceed to Checkout
                 </Button>

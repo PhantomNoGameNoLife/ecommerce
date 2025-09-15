@@ -31,6 +31,7 @@ import { Heart, Loader2, ShoppingCart } from "lucide-react";
 import { clearStatus, fetchCartHybrid } from "@/redux/cartSlice";
 import UserMenu from "@/components/navbar-components/user-menu";
 import toast from "react-hot-toast";
+import { fetchWishlistHybrid, wishClearStatus } from "@/redux/wishlistSlice";
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home", active: true },
@@ -50,14 +51,15 @@ const socialIcon = [
 export default function Navbar() {
   const pathname = usePathname();
   const { numOfCartItems, loading, error, success } = useSelector((state: RootState) => state.cart)
-  const heartCount = 0
+  const { count, wishLoading, wishError, wishSuccess } = useSelector((state: RootState) => state.wishlist)
   const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
-    async function getCart() {
+    async function getData() {
       await dispatch(fetchCartHybrid());
+      await dispatch(fetchWishlistHybrid());
     }
-    getCart()
+    getData()
   }, [dispatch]);
 
   useEffect(() => {
@@ -70,6 +72,17 @@ export default function Navbar() {
       dispatch(clearStatus());
     }
   }, [error, success, dispatch]);
+  
+  useEffect(() => {
+    if (wishError) {
+      toast.error(wishError);
+      dispatch(wishClearStatus());
+    }
+    if (wishSuccess) {
+      toast.success(wishSuccess);
+      dispatch(wishClearStatus());
+    }
+  }, [wishError, wishSuccess, dispatch]);
 
   return (
     <header className="border-b px-4 md:px-6">
@@ -185,7 +198,7 @@ export default function Navbar() {
             >
               <Heart />
               <Badge className="!size-4.5 rounded-full !p-1 font-mono tabular-nums absolute -top-1 -left-2">
-                {false ? <Loader2 className="animate-spin !size-4.5" /> : heartCount}
+                {wishLoading ? <Loader2 className="animate-spin !size-4.5" /> : count}
               </Badge>
             </Link>
             <Link
