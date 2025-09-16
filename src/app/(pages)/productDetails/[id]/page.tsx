@@ -2,7 +2,6 @@ import { getSingleProducts } from "@/apis/productsApi";
 import AddBtnWishlist from "@/app/_components/actionBtns/AddBtnWishlist";
 import CounterAddBtn from "@/app/_components/actionBtns/CounterAddBtn";
 import SwiperClient from "@/app/_components/swiperClient/ProductSlider";
-import { Button } from "@/components/ui/button";
 import { Product } from "@/types/product.t";
 import { BadgeCheck } from "lucide-react";
 import React from "react";

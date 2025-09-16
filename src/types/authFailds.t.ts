@@ -19,3 +19,10 @@ export const paymentFields: { name: PaymentFieldName; type?: string }[] = [
   { name: "city", type: "text" },
   { name: "details" },
 ];
+
+
+type ResetFieldName = "email" | "newPassword";
+export const resetFields: { name: ResetFieldName; type: string }[] = [
+  { name: "email", type: "email" },
+  { name: "newPassword", type: "password" },
+];

@@ -75,6 +75,9 @@ const Login = () => {
                   )}
                 />
               ))}
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-end mb-2 -mt-2">
+                <Link href="/forgotpassword" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot Password?</Link>
+              </p>
               <Button className='w-full py-5 cursor-pointer' disabled={form.formState.isSubmitting}>{form.formState.isSubmitting ? <Loader2 className="h-5 w-5 animate-spin" /> : "Login"}</Button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet? <Link href="/register" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>
