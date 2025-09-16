@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin 'tailwind-scrollbar';
@@ -11,7 +10,7 @@ html {
 
 
 body{
-    font-family: 'Encode Sans Expanded', sans-serif;
+    font-family: var(--font-encode-sans), sans-serif;
     @apply overflow-x-hidden
 }
 

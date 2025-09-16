@@ -101,6 +101,7 @@ export default function Navbar() {
                 className="group size-8 md:hidden cursor-pointer"
                 variant="ghost"
                 size="icon"
+                aria-label="Open Menu"
               >
                 <svg
                   className="pointer-events-none"
@@ -187,6 +188,7 @@ export default function Navbar() {
                   href={icon.href}
                   className="size-4 rounded-full hover:text-blue-500"
                   target="_blank"
+                  aria-label={icon.label}
                 >
                   {icon.icon}
                 </Link>

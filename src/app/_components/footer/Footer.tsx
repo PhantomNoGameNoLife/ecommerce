@@ -56,6 +56,7 @@ const Footer = () => {
                   href={icon.href}
                   className="size-4 rounded-full hover:text-blue-500"
                   target="_blank"
+                  aria-label={icon.label}
                 >
                   {icon.icon}
                 </Link>

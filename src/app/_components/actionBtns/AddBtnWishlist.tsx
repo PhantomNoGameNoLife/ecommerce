@@ -24,7 +24,7 @@ const AddBtnWishlist = ({ product }: { product: Product }) => {
     }
 
     return (
-        <Button variant='ghost' size='icon' disabled={isLoading} onClick={handleFav} className='rounded-full relative z-10 cursor-pointer group'>
+        <Button variant='ghost' aria-label="Heart" size='icon' disabled={isLoading} onClick={handleFav} className='rounded-full relative z-10 cursor-pointer group'>
             {isLoading ? <Loader2 className="animate-spin" /> : <HeartPlus className={`!size-8 text-foreground group-hover:text-red-500 transition-all duration-300 ${existingProduct ? 'fill-red-500 text-red-500 group-hover:fill-transparent' : ''}`} />}
         </Button>
     )
