@@ -1,5 +1,5 @@
 'use client'
-import EmptyWishList from "@/app/_components/emptyPages/EmptyWishlist"
+import EmptyPage from "@/app/_components/emptyPages/EmptyPage"
 import WishlistSkeleton from "@/app/_components/skeleton/WishlistSkeleton"
 import WishlistCard from "@/app/_components/wishlistCard/WishlistCard"
 import { RootState } from "@/redux/store"
@@ -12,7 +12,7 @@ const Wishlist = () => {
     if (wishLoading) return <WishlistSkeleton />
 
     if (count === 0) {
-        return <EmptyWishList />
+        return <EmptyPage text='Browse Products' />
     }
 
     return (

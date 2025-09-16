@@ -1,7 +1,7 @@
 'use client'
 import CartCard from '@/app/_components/cartCard/CartCard'
 import { ClearCart } from '@/app/_components/dialogs/ClearCart'
-import EmptyCart from '@/app/_components/emptyPages/EmptyCart'
+import EmptyPage from '@/app/_components/emptyPages/EmptyPage'
 import CartSkeleton from '@/app/_components/skeleton/CartSkeleton'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -32,7 +32,7 @@ const Cart = () => {
   if (loading) return <CartSkeleton />
 
   if (numOfCartItems === 0) {
-    return <EmptyCart />
+    return <EmptyPage text='Continue Shopping' />
   }
 
 

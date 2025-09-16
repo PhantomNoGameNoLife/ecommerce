@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request });
   const { pathname } = request.nextUrl;
   const authPage = ['/login', '/register']
-  const routes = ['allorders', '/payment']
+  const routes = ['/allorders', '/payment']
   if (token && authPage.includes(pathname))
     return NextResponse.redirect(new URL("/", request.url));
   else if (!token && routes.includes(pathname))

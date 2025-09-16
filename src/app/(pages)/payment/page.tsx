@@ -13,15 +13,16 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/redux/store'
-import { cashOrder, checkoutSession } from '@/redux/paymentSlice'
-import { useRouter } from 'next/router'
+import { cashOrder, checkoutSession, paymentClearStatus } from '@/redux/paymentSlice'
 import toast from 'react-hot-toast'
 import { clearCart } from '@/redux/cartSlice'
+import { useRouter } from 'next/navigation'
+import { fetchOrders } from '@/redux/ordersSlice'
 
 const Payment = () => {
     const router = useRouter()
     const { cartId } = useSelector((state: RootState) => state.cart)
-    const { paymentLoading, paymentSuccess, paymentError , url } = useSelector((state: RootState) => state.payment)
+    const { paymentLoading, paymentSuccess, paymentError, url } = useSelector((state: RootState) => state.payment)
     const dispatch = useDispatch<AppDispatch>()
     const [method, setMethod] = useState('Cash Payment');
     const form = useForm<PaymentSchemaType>({
@@ -41,6 +42,7 @@ const Payment = () => {
                 city: data.city
             }
         }
+        console.log(cartId)
         if (method === "Cash Payment") {
             dispatch(cashOrder({ id: cartId, values }));
         } else {
@@ -49,19 +51,27 @@ const Payment = () => {
     }
 
     useEffect(() => {
+        async function getOrders() {
+            await dispatch(fetchOrders());
+        }
         if (paymentSuccess) {
             dispatch(clearCart())
             toast.success(paymentSuccess)
-            if (method === 'Cash Payment')
+            if (method === 'Cash Payment') {
+                getOrders()
                 router.push('/allorders')
-            else 
+            }
+            else
                 window.location.href = url!
+
+        dispatch(paymentClearStatus())
         }
 
         if (paymentError) {
             toast.error(paymentError)
+            dispatch(paymentClearStatus())
         }
-    }, [paymentSuccess, paymentError, dispatch, router, method , url])
+    }, [paymentSuccess, paymentError, dispatch, router, method, url])
 
     return (
         <div className="px-2 sm:px-6 h-[calc(100dvh-65px)] flex items-center justify-center">

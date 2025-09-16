@@ -17,6 +17,7 @@ export async function GetUserOrders() {
 
   const res = await fetch(`${process.env.NEXT_URL}/Orders/user/${id}`);
 
+
   const data: Orders = await res.json();
 
   return data;

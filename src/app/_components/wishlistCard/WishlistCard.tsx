@@ -34,7 +34,7 @@ const WishlistCard = ({ product }: { product: WishlistProduct }) => {
 
             <CardContent className="p-4 space-y-3">
                 <div className="space-y-1">
-                    <h3 className="font-semibold text-balance leading-tight !text-xl">{product.title}</h3>
+                    <h3 className="font-semibold text-balance leading-tight !text-xl line-clamp-1">{product.title}</h3>
                     <p className="text-muted-foreground text-sm line-clamp-2">{product.description}</p>
                 </div>
 

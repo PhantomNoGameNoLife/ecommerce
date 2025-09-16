@@ -4,7 +4,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import OrderCard from '@/app/_components/orders/OrderCard'
 import OrdersSkeleton from '@/app/_components/skeleton/OrderSkeleton'
-import EmptyOrders from '@/app/_components/emptyPages/EmptyOrder'
+import EmptyPage from '@/app/_components/emptyPages/EmptyPage'
 
 
 const Orders = () => {
@@ -15,7 +15,7 @@ const Orders = () => {
     }
 
     if (!data || data.length === 0) {
-        return <EmptyOrders />
+        return <EmptyPage text='Start Shopping'/>
     }
 
     return (

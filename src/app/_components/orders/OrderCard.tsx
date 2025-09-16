@@ -23,7 +23,7 @@ const OrderCard = ({ order }: { order: Order }) => {
             </div>
 
             {/* --------- Footer --------- */}
-            <div className="w-full border-t border-border px-6 flex flex-col lg:flex-row items-center justify-between gap-4">
+            <div className="w-full border-t border-border px-6 py-3 flex flex-col lg:flex-row items-center justify-between gap-4">
                 <div className="flex flex-col sm:flex-row items-center gap-6 max-lg:text-center">
                     {/* Payment Method */}
                     <p className="font-medium text-lg text-foreground">
@@ -62,7 +62,7 @@ const OrderCard = ({ order }: { order: Order }) => {
 
                 {/* Total Price */}
                 <p className="font-semibold text-lg text-foreground">
-                    Total Price: <span className="text-primary">${order.totalOrderPrice}</span>
+                    Total Price: <span className="text-primary">{order.totalOrderPrice}<sub>EGP</sub></span>
                 </p>
             </div>
         </div>

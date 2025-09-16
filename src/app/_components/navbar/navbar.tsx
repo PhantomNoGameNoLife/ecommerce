@@ -1,6 +1,6 @@
 "use client";
 
-import logo from "@/../public/freshcart-logo.svg";
+import logo from "@/../public/freshcart-logo.png";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -55,7 +55,7 @@ export default function Navbar() {
   const { status } = useSession()
   const { numOfCartItems, loading, error, success } = useSelector((state: RootState) => state.cart)
   const { count, wishLoading, wishError, wishSuccess } = useSelector((state: RootState) => state.wishlist)
-  const { orderLoading, orderError, orderSuccess , data } = useSelector((state: RootState) => state.orders)
+  const { orderLoading, orderError, orderSuccess, data } = useSelector((state: RootState) => state.orders)
   const dispatch = useDispatch<AppDispatch>()
 
   // get cart & wishlist
@@ -87,7 +87,7 @@ export default function Navbar() {
     }
   }, [error, success, dispatch]);
 
-    // wishlist Status
+  // wishlist Status
   useEffect(() => {
     if (wishError) {
       toast.error(wishError);
@@ -99,7 +99,7 @@ export default function Navbar() {
     }
   }, [wishError, wishSuccess, dispatch]);
 
-    // order Status
+  // order Status
   useEffect(() => {
     if (orderError) {
       toast.error(orderError);
@@ -177,7 +177,7 @@ export default function Navbar() {
               <Image
                 src={logo}
                 alt="logo"
-                className="w-28 sm:w-full dark:invert"
+                className="w-22 dark:invert"
               />
             </Link>
             {/* Navigation menu */}
@@ -216,18 +216,18 @@ export default function Navbar() {
             ))}
           </ul>
           <div className="flex items-center gap-3">
-            <Link
-              href='/wishlist'
-              className={`text-muted-foreground hover:text-primary py-1.5 font-medium relative ${pathname === '/wishlist'
+            {status === 'authenticated' && <Link
+              href='/allorders'
+              className={`text-muted-foreground hover:text-primary py-1.5 font-medium relative ${pathname === '/allorders'
                 ? "text-primary"
                 : "text-muted-foreground hover:text-primary"
                 }`}
             >
               <PackageOpen />
-              <Badge className="!size-4.5 rounded-full !p-1 font-mono tabular-nums absolute top-0 -left-1/2 translate-x-1/2">
+              <Badge className="!size-4.5 rounded-full !p-1 font-mono tabular-nums absolute -top-1 -left-[30%] translate-x-1/2">
                 {orderLoading ? <Loader2 className="animate-spin !size-4.5" /> : data.length}
               </Badge>
-            </Link>
+            </Link>}
             <Link
               href='/wishlist'
               className={`text-muted-foreground hover:text-primary py-1.5 font-medium relative ${pathname === '/wishlist'

@@ -240,6 +240,7 @@ export const cartSlice = createSlice({
         state.loading = false;
         state.numOfCartItems = action.payload.numOfCartItems;
         state.data = action.payload.data;
+        state.cartId = action.payload.cartId;
       })
       .addCase(fetchCartHybrid.rejected, (state, action) => {
         state.loading = false;
@@ -260,6 +261,7 @@ export const cartSlice = createSlice({
         );
         state.numOfCartItems = action.payload.numOfCartItems;
         state.data = action.payload.data;
+        state.cartId = action.payload.cartId;
         state.success = "Product has been added to the cart";
       })
       .addCase(addToCartHybrid.rejected, (state, action) => {
