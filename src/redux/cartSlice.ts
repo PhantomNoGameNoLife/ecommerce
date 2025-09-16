@@ -215,6 +215,18 @@ export const cartSlice = createSlice({
       state.error = null;
       state.success = null;
     },
+
+    clearCart: (state) => {
+      Object.assign(state, {
+        ...emptyCart(),
+        loading: false,
+        actionCartLoading: [],
+        remove: [],
+        error: null,
+        success: null,
+        clear: false,
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -291,18 +303,14 @@ export const cartSlice = createSlice({
       })
       .addCase(removeFromCartHybrid.fulfilled, (state, action) => {
         const productId = action.meta.arg;
-        state.remove = state.remove.filter(
-          (id) => id !== productId
-        );
+        state.remove = state.remove.filter((id) => id !== productId);
         state.numOfCartItems = action.payload.numOfCartItems;
         state.data = action.payload.data;
         state.success = "Product has been removed from the cart";
       })
       .addCase(removeFromCartHybrid.rejected, (state, action) => {
         const productId = action.meta.arg;
-        state.remove = state.remove.filter(
-          (id) => id !== productId
-        );
+        state.remove = state.remove.filter((id) => id !== productId);
         state.error = action.payload as string;
       })
 
@@ -325,5 +333,5 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { clearStatus } = cartSlice.actions;
+export const { clearStatus , clearCart } = cartSlice.actions;
 export default cartSlice.reducer;

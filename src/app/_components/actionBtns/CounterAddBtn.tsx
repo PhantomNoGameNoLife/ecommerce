@@ -5,7 +5,7 @@ import React from 'react'
 import { useState } from 'react'
 import AddBtnCart from './AddBtnCart'
 
-const ButtonAddToCartSingle = ({ product }: { product: Product }) => {
+const CounterAddBtn = ({ product }: { product: Product }) => {
     const [counter, setCounter] = useState(1)
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,4 +35,4 @@ const ButtonAddToCartSingle = ({ product }: { product: Product }) => {
     )
 }
 
-export default ButtonAddToCartSingle
+export default CounterAddBtn

@@ -1,11 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cart from "./cartSlice";
 import wishlist from "./wishlistSlice";
+import orders from "./ordersSlice";
+import payment from "./paymentSlice";
 
 export const store = configureStore({
   reducer: {
     cart,
     wishlist,
+    orders,
+    payment
   },
 });
 

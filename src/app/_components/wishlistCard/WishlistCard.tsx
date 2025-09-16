@@ -7,7 +7,7 @@ import { WishlistProduct } from "@/types/wishlist.t"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "@/redux/store"
 import { removeFromWishlistHybrid } from "@/redux/wishlistSlice"
-import AddBtnCart from "../productCard/AddBtnCart"
+import AddBtnCart from "../actionBtns/AddBtnCart"
 import Link from "next/link"
 
 const WishlistCard = ({ product }: { product: WishlistProduct }) => {

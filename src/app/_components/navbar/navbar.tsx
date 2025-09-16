@@ -27,11 +27,13 @@ import { Badge } from "@/components/ui/badge";
 import type { AppDispatch, RootState } from '@/redux/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from "react";
-import { Heart, Loader2, ShoppingCart } from "lucide-react";
+import { Heart, Loader2, PackageOpen, ShoppingCart } from "lucide-react";
 import { clearStatus, fetchCartHybrid } from "@/redux/cartSlice";
 import UserMenu from "@/components/navbar-components/user-menu";
 import toast from "react-hot-toast";
 import { fetchWishlistHybrid, wishClearStatus } from "@/redux/wishlistSlice";
+import { useSession } from "next-auth/react";
+import { fetchOrders, resetOrdersStatus } from "@/redux/ordersSlice";
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home", active: true },
@@ -50,10 +52,13 @@ const socialIcon = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { status } = useSession()
   const { numOfCartItems, loading, error, success } = useSelector((state: RootState) => state.cart)
   const { count, wishLoading, wishError, wishSuccess } = useSelector((state: RootState) => state.wishlist)
+  const { orderLoading, orderError, orderSuccess , data } = useSelector((state: RootState) => state.orders)
   const dispatch = useDispatch<AppDispatch>()
 
+  // get cart & wishlist
   useEffect(() => {
     async function getData() {
       await dispatch(fetchCartHybrid());
@@ -62,6 +67,15 @@ export default function Navbar() {
     getData()
   }, [dispatch]);
 
+  // get order if authenticated
+  useEffect(() => {
+    async function getOrders() {
+      await dispatch(fetchOrders());
+    }
+    if (status === 'authenticated') getOrders();
+  }, [dispatch, status]);
+
+  // cart Status
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -72,7 +86,8 @@ export default function Navbar() {
       dispatch(clearStatus());
     }
   }, [error, success, dispatch]);
-  
+
+    // wishlist Status
   useEffect(() => {
     if (wishError) {
       toast.error(wishError);
@@ -83,6 +98,18 @@ export default function Navbar() {
       dispatch(wishClearStatus());
     }
   }, [wishError, wishSuccess, dispatch]);
+
+    // order Status
+  useEffect(() => {
+    if (orderError) {
+      toast.error(orderError);
+      dispatch(resetOrdersStatus());
+    }
+    if (orderSuccess) {
+      toast.success(orderSuccess);
+      dispatch(resetOrdersStatus());
+    }
+  }, [orderSuccess, orderError, dispatch]);
 
   return (
     <header className="border-b px-4 md:px-6">
@@ -189,6 +216,18 @@ export default function Navbar() {
             ))}
           </ul>
           <div className="flex items-center gap-3">
+            <Link
+              href='/wishlist'
+              className={`text-muted-foreground hover:text-primary py-1.5 font-medium relative ${pathname === '/wishlist'
+                ? "text-primary"
+                : "text-muted-foreground hover:text-primary"
+                }`}
+            >
+              <PackageOpen />
+              <Badge className="!size-4.5 rounded-full !p-1 font-mono tabular-nums absolute top-0 -left-1/2 translate-x-1/2">
+                {orderLoading ? <Loader2 className="animate-spin !size-4.5" /> : data.length}
+              </Badge>
+            </Link>
             <Link
               href='/wishlist'
               className={`text-muted-foreground hover:text-primary py-1.5 font-medium relative ${pathname === '/wishlist'

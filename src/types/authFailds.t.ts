@@ -12,3 +12,10 @@ export const loginFields: { name: LoginFieldName; type: string }[] = [
   { name: "email", type: "email" },
   { name: "password", type: "password" },
 ];
+
+type PaymentFieldName = "phone" | "city" | "details";
+export const paymentFields: { name: PaymentFieldName; type?: string }[] = [
+  { name: "phone", type: "tel" },
+  { name: "city", type: "text" },
+  { name: "details" },
+];

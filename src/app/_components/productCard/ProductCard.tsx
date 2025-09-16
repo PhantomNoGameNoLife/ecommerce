@@ -5,8 +5,8 @@ import React from 'react'
 import { Rating } from 'react-simple-star-rating'
 import { Product } from '@/types/product.t';
 import GlareHover from '@/components/GlareHover'
-import AddBtnCart from './AddBtnCart'
-import AddBtnWishlist from './AddBtnWishlist'
+import AddBtnCart from '../actionBtns/AddBtnCart'
+import AddBtnWishlist from '../actionBtns/AddBtnWishlist'
 
 
 const ProductCard = ({ product }: { product: Product }) => {

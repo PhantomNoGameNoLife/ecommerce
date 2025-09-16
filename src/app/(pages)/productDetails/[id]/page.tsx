@@ -1,6 +1,6 @@
 import { getSingleProducts } from "@/apis/productsApi";
-import AddBtnWishlist from "@/app/_components/productCard/AddBtnWishlist";
-import ButtonAddToCartSingle from "@/app/_components/productCard/ButtonAddToCartSingle";
+import AddBtnWishlist from "@/app/_components/actionBtns/AddBtnWishlist";
+import CounterAddBtn from "@/app/_components/actionBtns/CounterAddBtn";
 import SwiperClient from "@/app/_components/swiperClient/ProductSlider";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/types/product.t";
@@ -66,7 +66,7 @@ const ProductDetails = async ({ params }: { params: { id: string } }) => {
                 </li>
               </ul>
               <div className="flex items-center flex-col min-[400px]:flex-row gap-3 mb-3 min-[400px]:mb-8">
-                <ButtonAddToCartSingle product={data} />
+                <CounterAddBtn product={data} />
               </div>
               <Button className="text-center w-full px-5 py-7 rounded-[100px] flex items-center justify-center font-semibold text-lg shadow-sm cursor-pointer">
                 Buy Now

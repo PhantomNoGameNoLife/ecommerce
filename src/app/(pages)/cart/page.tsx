@@ -25,7 +25,7 @@ const Cart = () => {
       toast('Please login first to make an order')
     }
     else if (status === 'authenticated') {
-      router.push('/allorders')
+      router.push('/payment')
     }
   }
 
