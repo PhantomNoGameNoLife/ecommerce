@@ -4,9 +4,15 @@ import { Product } from "@/types/product.t";
 import { getAllProducts } from "@/apis/productsApi";
 import HomeSlider from "./_components/swiperClient/HomeSlider";
 import CategorySlider from "./_components/swiperClient/CategorySlider";
+import PaginationWrapper from "./_components/Pagination/PaginationWrapper";
 
-const page = async () => {
-  const data:Product[] = await getAllProducts();
+const Products = async ({ searchParams }: { searchParams: Promise<{ page?: string }> }) => {
+  const {page} = await searchParams;
+  const currentPage = Number(page) || 1;
+
+  const { data, metadata } = await getAllProducts(currentPage, 20);
+  const totalPages = metadata?.numberOfPages || 1;
+
   return (
     <main className="mt-8 px-4 md:px-6">
       <HomeSlider />
@@ -16,8 +22,12 @@ const page = async () => {
           <ProductCard key={pro.id} product={pro} />
         ))}
       </section>
+
+      <div className="my-10 flex justify-center">
+        <PaginationWrapper totalPages={totalPages} />
+      </div>
     </main>
   );
 };
 
-export default page;
+export default Products;

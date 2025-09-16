@@ -49,7 +49,7 @@ const CartCard = ({ product }: { product: Product }) => {
                         </Link>
 
                         <div className="w-full min-w-0 flex-1 space-y-4 md:max-w-md flex flex-col">
-                            <Link href={`/productDetails/${product.product.id}`} className="text-base font-medium text-foreground hover:underline">
+                            <Link href={`/productDetails/${product.product.id}`} className="text-base font-medium text-foreground hover:underline line-clamp-1">
                                 {product.product.title}
                             </Link>
                             <p className="text-base font-bold text-foreground">{product.price}<sub>EGP</sub></p>

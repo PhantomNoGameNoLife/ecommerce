@@ -25,8 +25,11 @@ const ProductCard = ({ product }: { product: Product }) => {
             <div className="w-full max-w-sm bg-[var(--card)] border border-border rounded-lg shadow-sm">
                 <Link href={`/productDetails/${product.id}`}>
                     <div className="relative w-full h-[300px] sm:h-[250px] overflow-hidden">
-                        <Image src={product.imageCover} alt={product.title} fill className="object-cover rounded-t-lg hover:scale-125 transition-all duration-500" />
-
+                        <Image sizes="(max-width: 640px) 100vw,
+                                        (max-width: 1024px) 50vw,
+                                        (max-width: 1280px) 33vw,
+                                        25vw"
+                            src={product.imageCover} alt={product.title} fill className="object-cover rounded-t-lg hover:scale-125 transition-all duration-500 !relative" />
                     </div>
                 </Link>
                 <div className="p-5 !bg-primary-foreground">

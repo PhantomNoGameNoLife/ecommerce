@@ -68,9 +68,6 @@ const ProductDetails = async ({ params }: { params: { id: string } }) => {
               <div className="flex items-center flex-col min-[400px]:flex-row gap-3 mb-3 min-[400px]:mb-8">
                 <CounterAddBtn product={data} />
               </div>
-              <Button className="text-center w-full px-5 py-7 rounded-[100px] flex items-center justify-center font-semibold text-lg shadow-sm cursor-pointer">
-                Buy Now
-              </Button>
             </div>
           </div>
         </div>

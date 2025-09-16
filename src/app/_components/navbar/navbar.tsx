@@ -11,14 +11,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  FaFacebook,
-  FaInstagram,
-  FaLinkedin,
-  FaTiktok,
-  FaTwitter,
-  FaYoutube,
-} from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import ToggleTheme from "./toggletheme";
@@ -34,21 +26,7 @@ import toast from "react-hot-toast";
 import { fetchWishlistHybrid, wishClearStatus } from "@/redux/wishlistSlice";
 import { useSession } from "next-auth/react";
 import { fetchOrders, resetOrdersStatus } from "@/redux/ordersSlice";
-// Navigation links array to be used in both desktop and mobile menus
-const navigationLinks = [
-  { href: "/", label: "Home", active: true },
-  { href: "/categories", label: "Categories" },
-  { href: "/brands", label: "Brands" },
-];
-
-const socialIcon = [
-  { href: "https://www.instagram.com/", icon: <FaInstagram /> },
-  { href: "https://facebook.com/", icon: <FaFacebook /> },
-  { href: "https://www.tiktok.com/", icon: <FaTiktok /> },
-  { href: "https://x.com/", icon: <FaTwitter /> },
-  { href: "https://www.linkedin.com/", icon: <FaLinkedin /> },
-  { href: "https://www.youtube.com/", icon: <FaYoutube /> },
-];
+import { navigationLinks, socialIcon } from "@/utilities/links";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -177,7 +155,7 @@ export default function Navbar() {
               <Image
                 src={logo}
                 alt="logo"
-                className="w-22 dark:invert"
+                className="w-22"
               />
             </Link>
             {/* Navigation menu */}
