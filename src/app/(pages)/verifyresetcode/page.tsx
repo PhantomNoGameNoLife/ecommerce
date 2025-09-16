@@ -1,15 +1,18 @@
 "use client"
 import { useForm } from 'react-hook-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { verifySchema, type VerifySchemaType } from '@/schema/verify.s'
 import { Loader2 } from 'lucide-react'
 import { VerfiyCode } from '@/apis/forgotApi'
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@/components/ui/input-otp'
+import toast from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
 
 const ForgetPassword = () => {
+    const router = useRouter()
+
     const form = useForm<VerifySchemaType>({
         defaultValues: {
             resetCode: "",
@@ -18,9 +21,17 @@ const ForgetPassword = () => {
     })
 
     async function handleVerify(values: VerifySchemaType) {
-        console.log(values)
-        const data = await VerfiyCode(values.resetCode)
-        console.log(data)
+        try {
+            const data = await VerfiyCode(values.resetCode)
+            if (data && data.statusMsg === 'success') {
+                toast.success(data.message);
+                router.push('/resetpassword')
+            }
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                toast.error(err.message);
+            } else toast.error("Something went wrong");
+        }
     }
 
     return (

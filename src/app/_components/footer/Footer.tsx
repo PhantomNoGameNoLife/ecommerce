@@ -19,7 +19,7 @@ const Footer = () => {
               src={logo}
               alt="logo"
               width={140}
-              height={40}
+              className="w-[140px] h-auto"
             />
           </Link>
 

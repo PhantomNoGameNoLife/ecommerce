@@ -7,8 +7,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { forgotSchema, type ForgotSchemaType } from '@/schema/forgot.s'
 import { Loader2 } from 'lucide-react'
 import { ForgotPassword } from '@/apis/forgotApi'
+import toast from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
 
 const ForgetPassword = () => {
+  const router = useRouter()
   const form = useForm<ForgotSchemaType>({
     defaultValues: {
       email: "",
@@ -17,8 +20,17 @@ const ForgetPassword = () => {
   })
 
   async function handleForgot(values: ForgotSchemaType) {
-    const data = await ForgotPassword(values.email)
-    console.log(data)
+    try {
+      const data = await ForgotPassword(values.email)
+      if (data && data.statusMsg === 'success') {
+        toast.success(data.message);
+        router.push('/verifyresetcode')
+      }
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else toast.error("Something went wrong");
+    }
   }
 
   return (

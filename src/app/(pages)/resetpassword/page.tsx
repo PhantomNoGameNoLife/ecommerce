@@ -9,8 +9,13 @@ import { resetFields } from '@/types/authFailds.t'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
+import { ResetPassword } from '@/apis/forgotApi'
 
 const Login = () => {
+    const router = useRouter()
+
     const [showPassword, setShowPassword] = useState(false);
     const form = useForm<ResetSchemaType>({
         defaultValues: {
@@ -21,7 +26,17 @@ const Login = () => {
     })
 
     async function handleReset(values: ResetSchemaType) {
-        console.log(values)
+        try {
+            const data = await ResetPassword(values)
+            if (data && data.statusMsg === 'success') {
+                toast.success(data.message);
+                router.push('/login')
+            }
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                toast.error(err.message);
+            } else toast.error("Something went wrong");
+        }
     }
 
     return (

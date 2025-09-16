@@ -11,7 +11,11 @@ interface MyJWT {
 }
 
 export async function getMyToken(): Promise<string | undefined> {
-  const fakeToken = (await cookies()).get("next-auth.session-token")?.value;
+    const cookieStore = await cookies();
+
+  const fakeToken =
+    cookieStore.get("next-auth.session-token")?.value ||
+    cookieStore.get("__Secure-next-auth.session-token")?.value;
 
   if (!fakeToken) return undefined;
 

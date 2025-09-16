@@ -5,7 +5,7 @@ import axios from "axios";
 export async function ForgotPassword(email: string) {
   const { data } = await axios.post(
     `${process.env.NEXT_URL}/auth/forgotPasswords`,
-    email
+    { email }
   );
 
   return data;
@@ -14,7 +14,7 @@ export async function ForgotPassword(email: string) {
 export async function VerfiyCode(resetCode: string) {
   const { data } = await axios.post(
     `${process.env.NEXT_URL}/auth/verifyResetCode`,
-    resetCode
+    { resetCode }
   );
 
   return data;
