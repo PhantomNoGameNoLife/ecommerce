@@ -13,24 +13,26 @@ import 'swiper/css';
 const HomeSlider = () => {
     return (
         <section className="mb-10 flex flex-col md:flex-row">
-            <div className="w-full md:w-2/3 rounded-s-xl">
+            <div className="w-full md:w-2/3 overflow-hidden rounded-xl md:rounded-none md:rounded-l-xl">
                 <Swiper
                     spaceBetween={0}
                     slidesPerView={1}
-                    modules={[Autoplay]}
+                    // modules={[Autoplay]}
                     autoplay={{
                         delay: 2000,
                         disableOnInteraction: false,
                     }}
-                    loop >
-                    <SwiperSlide><div className="h-[300px] md:h-[400px] aspect-[750/483] w-full relative"><Image className="md:object-cover rounded-xl md:rounded-e-none md:rounded-s-xl"  sizes="(max-width: 768px) 100vw, 66vw" fill priority fetchPriority="high" src={slide1} alt="slide 1" /></div></SwiperSlide>
-                    <SwiperSlide><div className="h-[300px] md:h-[400px] aspect-[750/483] w-full relative"><Image className="md:object-cover rounded-xl md:rounded-e-none md:rounded-s-xl"  sizes="(max-width: 768px) 100vw, 66vw" fill src={slide2} alt="slide 2" /></div></SwiperSlide>
-                    <SwiperSlide><div className="h-[300px] md:h-[400px] aspect-[750/483] w-full relative"><Image className="md:object-cover rounded-xl md:rounded-e-none md:rounded-s-xl"  sizes="(max-width: 768px) 100vw, 66vw" fill src={slide3} alt="slide 3" /></div></SwiperSlide>
+                    loop 
+                    className="!rounded-none"
+                    >
+                    <SwiperSlide><div className="h-[300px] md:h-[400px] aspect-[750/483] w-full relative"><Image className="md:object-cover rounded-xl"  sizes="(max-width: 768px) 100vw, 66vw" fill priority fetchPriority="high" src={slide1} alt="slide 1" /></div></SwiperSlide>
+                    <SwiperSlide><div className="h-[300px] md:h-[400px] aspect-[750/483] w-full relative"><Image className="md:object-cover rounded-xl rounded-xl md:rounded-none md:rounded-l-xl"  sizes="(max-width: 768px) 100vw, 66vw" fill src={slide2} alt="slide 2" /></div></SwiperSlide>
+                    <SwiperSlide><div className="h-[300px] md:h-[400px] aspect-[750/483] w-full relative"><Image className="md:object-cover rounded-xl rounded-xl md:rounded-none md:rounded-l-xl"  sizes="(max-width: 768px) 100vw, 66vw" fill src={slide3} alt="slide 3" /></div></SwiperSlide>
                 </Swiper>
             </div>
-            <div className="w-full md:w-1/3 rounded-e-xl hidden md:block">
-                <div className="h-[200px] w-1/2 md:w-full relative"><Image className="object-cover rounded-e-xl" fill src={banner1} alt="banner 1" /></div>
-                <div className="h-[200px] w-1/2 md:w-full relative"><Image className="object-cover rounded-e-xl" fill src={banner2} alt="banner 2" /></div>
+            <div className="w-full md:w-1/3 rounded-r-xl hidden md:block overflow-hidden">
+                <div className="h-[200px] w-1/2 md:w-full relative"><Image className="object-cover" fill src={banner1} alt="banner 1" /></div>
+                <div className="h-[200px] w-1/2 md:w-full relative"><Image className="object-cover" fill src={banner2} alt="banner 2" /></div>
             </div>
         </section>
     );

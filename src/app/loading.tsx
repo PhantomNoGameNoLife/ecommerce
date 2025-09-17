@@ -8,11 +8,11 @@ const loading = () => {
       {/* main slider */}
       <section className="w-full flex flex-col md:flex-row">
         <div className="w-full md:w-2/3">
-          <Skeleton className="h-[400px] w-full rounded-xl" />
+          <Skeleton className="h-[400px] w-full rounded-xl md:rounded-none md:rounded-l-xl" />
         </div>
         <div className="hidden md:w-1/3 md:flex md:flex-col">
-          <Skeleton className="h-[200px] w-1/2 md:w-full md:block rounded-xl" />
-          <Skeleton className="h-[200px] w-1/2 md:w-full md:block rounded-xl" />
+          <Skeleton className="h-[200px] w-1/2 md:w-full md:block rounded-r-xl" />
+          <Skeleton className="h-[200px] w-1/2 md:w-full md:block rounded-r-xl" />
         </div>
       </section>
       {/* category slider*/}

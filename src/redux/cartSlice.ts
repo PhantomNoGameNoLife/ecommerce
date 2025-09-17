@@ -131,8 +131,9 @@ export const updateCartHybrid = createAsyncThunk<
 
       const product = state.data.products.find((p) => p.product.id === id);
       if (product) {
-        product.count += count;
-        state.data.totalCartPrice += product.price * count;
+        const dif = count - product.count;
+        product.count = count;
+        state.data.totalCartPrice += product.price * dif;
 
         if (product.count <= 0) {
           state.data.products = state.data.products.filter(
@@ -335,5 +336,5 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { clearStatus , clearCart } = cartSlice.actions;
+export const { clearStatus, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;

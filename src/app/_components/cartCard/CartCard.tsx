@@ -26,7 +26,7 @@ const CartCard = ({ product }: { product: Product }) => {
 
     useEffect(() => {
         if (debouncedValue !== product.count) {
-            dispatch(updateCartHybrid({ id: product.product.id, count: debouncedValue - product.count }))
+            dispatch(updateCartHybrid({ id: product.product.id, count: debouncedValue }))
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedValue])
