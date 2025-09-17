@@ -7,9 +7,9 @@ import { useSelector } from "react-redux"
 import toast from "react-hot-toast"
 import { UploadButton } from "@/utilities/uploadthing"
 
-export function AvatarUpload({ onUpload }: { onUpload: (url: string) => void }) {
+export function AvatarUpload({ onUpload }: { onUpload: (url: string, key: string) => void }) {
     const { data } = useSelector((state: RootState) => state.user)
-    const [preview, setPreview] = useState<string | undefined>(data?.addresses?.[data.addresses.length - 1]?.details)
+    const [preview, setPreview] = useState<string | undefined>(data?.addresses[data.addresses.length - 1].details)
 
     return (
         <div className="flex flex-col items-center gap-3">
@@ -28,11 +28,19 @@ export function AvatarUpload({ onUpload }: { onUpload: (url: string) => void }) 
             )}
 
             <UploadButton
+                appearance={{
+                    button: "ut-button",
+                    container: "ut-container", 
+                    allowedContent: "ut-allowed",
+                }}
+                content={{
+                    allowedContent: "Only images (png, jpg, jpeg, webp)",
+                }}
                 endpoint="avatar"
                 onClientUploadComplete={(res) => {
                     if (res && res[0]) {
                         setPreview(res[0].ufsUrl)
-                        onUpload(res[0].ufsUrl)
+                        onUpload(res[0].ufsUrl, res[0].key)
                     }
                 }}
                 onUploadError={(err) => {

@@ -15,18 +15,33 @@ import { AppDispatch, RootState } from "@/redux/store"
 import { useDispatch, useSelector } from "react-redux"
 import { AddAddress, UpdateUser } from "@/apis/userApi"
 import { fetchUser } from "@/redux/userSlice"
-
+import { useEffect, useState, useRef } from "react"
 
 const ProfileEditForm = () => {
+    const [saved, setSaved] = useState(false)
+    const [uploadedFile, setUploadedFile] = useState<{ url: string; key: string } | null>(null)
     const { data } = useSelector((state: RootState) => state.user)
     const dispatch = useDispatch<AppDispatch>()
+
+    const savedRef = useRef(saved)
+    const uploadedFileRef = useRef(uploadedFile)
+
+    useEffect(() => {
+        savedRef.current = saved
+    }, [saved])
+
+    useEffect(() => {
+        uploadedFileRef.current = uploadedFile
+    }, [uploadedFile])
 
     const form = useForm<ProfileSchemaType>({
         resolver: zodResolver(profileSchema),
         defaultValues: {
-            avatar: "",
+            avatar:
+                data?.addresses?.[data.addresses.length - 1]?.details?.startsWith("http")
+                    ? data?.addresses[data.addresses.length - 1].details
+                    : "",
             name: data?.name,
-            email: data?.email,
             phone: data?.phone,
             addressName: data?.addresses[data?.addresses.length - 1].name,
             addressPhone: data?.addresses[data?.addresses.length - 1].phone,
@@ -39,7 +54,6 @@ const ProfileEditForm = () => {
             const payload = {
                 user: {
                     name: values.name,
-                    email: values.email,
                     phone: values.phone,
                 },
                 address: {
@@ -50,18 +64,52 @@ const ProfileEditForm = () => {
                 },
             }
 
-            const message = await UpdateUser(payload.user)
-            const status = await AddAddress(payload.address)
-            if (message === 'success' && status === 'success') {
-                await dispatch(fetchUser());
+            const userRes = await UpdateUser(payload.user)
+            const addressRes = await AddAddress(payload.address)
+
+            if (userRes.message === "success" && addressRes.status === "success") {
+                setSaved(true)
+                // delete all state
+                savedRef.current = true
+                setUploadedFile(null)
+                uploadedFileRef.current = null
+
+                await dispatch(fetchUser())
                 toast.success("Profile updated successfully!")
+            } else {
+                if (uploadedFileRef.current) {
+                    await fetch("/api/uploadthing/delete", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ key: uploadedFileRef.current.key }),
+                    })
+                }
+                toast.error("Failed to update profile")
             }
-            else toast.error("Failed to update profile")
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (err: unknown) {
+        } catch {
+            if (uploadedFileRef.current) {
+                await fetch("/api/uploadthing/delete", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ key: uploadedFileRef.current.key }),
+                })
+            }
             toast.error("Failed to update profile")
         }
     }
+
+    // clear profile img if user didn't save the form or exit after upload the img
+    useEffect(() => {
+        return () => {
+            if (!savedRef.current && uploadedFileRef.current) {
+                fetch("/api/uploadthing/delete", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ key: uploadedFileRef.current.key }),
+                })
+            }
+        }
+    }, [])
 
     return (
         <div className="px-2 sm:px-6 py-8">
@@ -83,7 +131,12 @@ const ProfileEditForm = () => {
                                             </FormLabel>
                                             <FormControl>
                                                 {f.type === "file" ? (
-                                                    <AvatarUpload onUpload={(url) => field.onChange(url)} />
+                                                    <AvatarUpload
+                                                        onUpload={(url, key) => {
+                                                            setUploadedFile({ url, key })
+                                                            field.onChange(url)
+                                                        }}
+                                                    />
                                                 ) : (
                                                     <Input type={f.type} {...field} placeholder={`Enter your ${f.name}`} />
                                                 )}

@@ -27,12 +27,11 @@ export const resetFields: { name: ResetFieldName; type: string }[] = [
   { name: "newPassword", type: "password" },
 ];
 
-type ProfileFieldName = "avatar" | "name" | "email" | "phone" | "addressName" | "addressPhone" | "addressCity";
+type ProfileFieldName = "avatar" | "name"  | "phone" | "addressName" | "addressPhone" | "addressCity";
 
 export const profileFields: { name: ProfileFieldName; type: string }[] = [
   { name: "avatar", type: "file" },
   { name: "name", type: "text" },
-  { name: "email", type: "email" },
   { name: "phone", type: "tel" },
   { name: "addressName", type: "text" },
   { name: "addressPhone", type: "tel" },

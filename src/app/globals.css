@@ -10,10 +10,22 @@ html {
   @apply overflow-x-hidden scrollbar-thin scrollbar-thumb-primary scrollbar-track-background;
 }
 
+body {
+  font-family: var(--font-encode-sans), sans-serif;
+  @apply overflow-x-hidden
+}
 
-body{
-    font-family: var(--font-encode-sans), sans-serif;
-    @apply overflow-x-hidden
+/* profile button upload */
+.ut-button {
+  @apply w-full bg-primary text-primary-foreground font-medium px-4 py-2 rounded-xl shadow-sm transition hover:bg-primary/90;
+}
+
+.ut-container {
+  @apply flex flex-col items-center gap-2;
+}
+
+.ut-allowed {
+  @apply text-xs text-muted-foreground;
 }
 
 @theme inline {
@@ -89,7 +101,7 @@ body{
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --glare:oklch(0.488 0.243 264.376);
+  --glare: oklch(0.488 0.243 264.376);
 }
 
 .dark {
@@ -124,13 +136,14 @@ body{
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-  --glare:oklch(1 0 0);
+  --glare: oklch(1 0 0);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

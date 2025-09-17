@@ -36,13 +36,13 @@ const ProfilePage = () => {
           <CardContent className="p-8 flex flex-col md:flex-row">
             {/* Left section */}
             <div className="md:w-1/3 text-center mb-8 md:mb-0">
-              {data?.addresses?.[data.addresses.length - 1]?.details?.startsWith("http") ? (
+              {data?.addresses[data.addresses.length - 1]?.details?.startsWith("http") ? (
                 <Image
                   src={data.addresses[data.addresses.length - 1].details}
                   alt="Profile Picture"
                   width={192}
                   height={192}
-                  className="rounded-full size-48 mx-auto mb-4 border-4 border-primary transition-transform duration-300 hover:scale-105"
+                  className="rounded-full size-48 mx-auto mb-4 border-4 border-primary transition-transform duration-300 hover:scale-105 object-cover"
                 />
               ) : (
                 <div className="size-48 mx-auto mb-4 rounded-full flex items-center justify-center bg-foreground text-primary-foreground border-4 border-primary overflow-hidden">

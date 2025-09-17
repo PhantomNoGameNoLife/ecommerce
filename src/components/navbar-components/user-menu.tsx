@@ -38,11 +38,11 @@ export default function UserMenu() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-auto p-0 hover:bg-transparent cursor-pointer">
           <Avatar>
-            {status === 'loading' && <Skeleton className="size-8 rounded-full" />}
-            {status === 'unauthenticated' && <Image src={user} alt="Profile image" className="rounded-full" />}
+            {status === 'loading' && <Skeleton className="!size-8 rounded-full" />}
+            {status === 'unauthenticated' && <Image src={user} alt="Profile image" className="rounded-full !size-8" />}
             {status === 'authenticated' && data?.addresses?.[data.addresses.length - 1]?.details?.startsWith("http") ?
-              <Image src={data?.addresses?.[data.addresses.length - 1]?.details} alt="Profile image" className="rounded-full" />
-              : <AvatarFallback className="bg-foreground text-primary-foreground font-bold text-md">{data?.name.charAt(0).toUpperCase()}</AvatarFallback>
+              <Image src={data?.addresses?.[data.addresses.length - 1]?.details} width={32} height={32} alt="Profile image" className="rounded-full !size-8 object-cover" />
+              : <AvatarFallback className="bg-foreground text-primary-foreground font-bold text-md !size-8">{data?.name.charAt(0).toUpperCase()}</AvatarFallback>
             }
           </Avatar>
         </Button>
