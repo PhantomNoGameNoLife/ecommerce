@@ -27,6 +27,7 @@ import { fetchWishlistHybrid, wishClearStatus } from "@/redux/wishlistSlice";
 import { useSession } from "next-auth/react";
 import { fetchOrders, resetOrdersStatus } from "@/redux/ordersSlice";
 import { navigationLinks, socialIcon } from "@/utilities/links";
+import { fetchUser, resetUserStatus } from "@/redux/userSlice";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -34,6 +35,7 @@ export default function Navbar() {
   const { numOfCartItems, loading, error, success } = useSelector((state: RootState) => state.cart)
   const { count, wishLoading, wishError, wishSuccess } = useSelector((state: RootState) => state.wishlist)
   const { orderLoading, orderError, orderSuccess, data } = useSelector((state: RootState) => state.orders)
+  const { userError , userSuccess } = useSelector((state: RootState) => state.user)
   const dispatch = useDispatch<AppDispatch>()
 
   // get cart & wishlist
@@ -51,6 +53,14 @@ export default function Navbar() {
       await dispatch(fetchOrders());
     }
     if (status === 'authenticated') getOrders();
+  }, [dispatch, status]);
+
+  // get user if authenticated
+  useEffect(() => {
+    async function getUser() {
+      await dispatch(fetchUser());
+    }
+    if (status === 'authenticated') getUser();
   }, [dispatch, status]);
 
   // cart Status
@@ -88,6 +98,18 @@ export default function Navbar() {
       dispatch(resetOrdersStatus());
     }
   }, [orderSuccess, orderError, dispatch]);
+
+  // user Status
+  useEffect(() => {
+    if (userSuccess) {
+      toast.error(userSuccess);
+      dispatch(resetUserStatus());
+    }
+    if (userError) {
+      toast.success(userError);
+      dispatch(resetUserStatus());
+    }
+  }, [userSuccess, userError, dispatch]);
 
   return (
     <header className="border-b px-4 md:px-6">

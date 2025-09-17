@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request });
   const { pathname } = request.nextUrl;
   const authPage = ['/login', '/register' , '/forgotpassword' , '/verifyresetcode' ,'/resetpassword']
-  const routes = ['/allorders', '/payment']
+  const routes = ['/allorders', '/payment' , '/profile']
   if (token && authPage.includes(pathname))
     return NextResponse.redirect(new URL("/", request.url));
   else if (!token && routes.includes(pathname))
@@ -16,5 +16,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/login", "/register" , '/allorders' , '/payment' , '/forgotpassword', '/verifyresetcode' , '/resetpassword'],
+  matcher: ["/login", "/register" , '/allorders' , '/payment' , '/forgotpassword', '/verifyresetcode' , '/resetpassword' , '/profile'],
 };

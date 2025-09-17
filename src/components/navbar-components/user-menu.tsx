@@ -1,4 +1,5 @@
 import {
+  CircleUserRound,
   KeyRound,
   LogOut,
   Signpost,
@@ -24,10 +25,13 @@ import Image from "next/image"
 import { Skeleton } from "../ui/skeleton"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 export default function UserMenu() {
   const pathname = usePathname();
-  const { data: session, status } = useSession()
+  const { status } = useSession()
+  const { data } = useSelector((state: RootState) => state.user)
 
   return (
     <DropdownMenu>
@@ -36,18 +40,21 @@ export default function UserMenu() {
           <Avatar>
             {status === 'loading' && <Skeleton className="size-8 rounded-full" />}
             {status === 'unauthenticated' && <Image src={user} alt="Profile image" className="rounded-full" />}
-            {status === 'authenticated' && <AvatarFallback className="bg-foreground text-primary-foreground font-bold text-md">{session.user.name.charAt(0).toUpperCase()}</AvatarFallback>}
+            {status === 'authenticated' && data?.addresses?.[data.addresses.length - 1]?.details?.startsWith("http") ?
+              <Image src={data?.addresses?.[data.addresses.length - 1]?.details} alt="Profile image" className="rounded-full" />
+              : <AvatarFallback className="bg-foreground text-primary-foreground font-bold text-md">{data?.name.charAt(0).toUpperCase()}</AvatarFallback>
+            }
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="max-w-64" align="end">
-        {session && <>
+        {data && <>
           <DropdownMenuLabel className="flex min-w-0 flex-col">
             <span className="text-foreground truncate text-sm font-medium">
-              {session.user.name}
+              {data.name}
             </span>
             <span className="text-muted-foreground truncate text-xs font-normal">
-              {session.user.email}
+              {data.email}
             </span>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -67,12 +74,20 @@ export default function UserMenu() {
               </DropdownMenuItem>
             </Link>
           </>}
-          {status === 'authenticated' && <DropdownMenuItem onClick={() => signOut({
+          {status === 'authenticated' && <>
+            <Link href='/profile'>
+              <DropdownMenuItem className={`cursor-pointer ${pathname === '/profile' ? '!bg-blue-600' : ''}`}>
+                <CircleUserRound size={16} className="opacity-60" aria-hidden="true" />
+                <span>Profile</span>
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuItem onClick={() => signOut({
               callbackUrl: '/login'
             })} className='cursor-pointer'>
               <LogOut size={16} className="opacity-60" aria-hidden="true" />
               <span>SignOut</span>
             </DropdownMenuItem>
+          </>
           }
         </DropdownMenuGroup>
       </DropdownMenuContent>

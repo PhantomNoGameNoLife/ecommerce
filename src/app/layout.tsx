@@ -1,4 +1,7 @@
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "./api/uploadthing/core";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -41,6 +44,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable}`}
       >
+        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <Providers
           attribute="class"
           defaultTheme="dark"
@@ -50,8 +54,8 @@ export default function RootLayout({
           <Navbar />
           {children}
           <Footer />
-          <SpeedInsights />
         </Providers>
+        <SpeedInsights />
       </body>
     </html>
   );
