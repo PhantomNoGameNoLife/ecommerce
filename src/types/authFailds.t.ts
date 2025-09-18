@@ -20,14 +20,19 @@ export const paymentFields: { name: PaymentFieldName; type?: string }[] = [
   { name: "details" },
 ];
 
-
 type ResetFieldName = "email" | "newPassword";
 export const resetFields: { name: ResetFieldName; type: string }[] = [
   { name: "email", type: "email" },
   { name: "newPassword", type: "password" },
 ];
 
-type ProfileFieldName = "avatar" | "name"  | "phone" | "addressName" | "addressPhone" | "addressCity";
+type ProfileFieldName =
+  | "avatar"
+  | "name"
+  | "phone"
+  | "addressName"
+  | "addressPhone"
+  | "addressCity";
 
 export const profileFields: { name: ProfileFieldName; type: string }[] = [
   { name: "avatar", type: "file" },
@@ -36,4 +41,11 @@ export const profileFields: { name: ProfileFieldName; type: string }[] = [
   { name: "addressName", type: "text" },
   { name: "addressPhone", type: "tel" },
   { name: "addressCity", type: "text" },
+];
+
+type changeFieldName = "currentPassword" | "password" | "rePassword";
+export const changeFields: { name: changeFieldName; type: string }[] = [
+  { name: "currentPassword", type: "password" },
+  { name: "password", type: "password" },
+  { name: "rePassword", type: "password" },
 ];

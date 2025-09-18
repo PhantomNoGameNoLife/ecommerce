@@ -28,8 +28,8 @@ const Login = () => {
     async function handleReset(values: ResetSchemaType) {
         try {
             const data = await ResetPassword(values)
-            if (data && data.statusMsg === 'success') {
-                toast.success(data.message);
+            if (data) {
+                toast.success('Use your new password to login');
                 router.push('/login')
             }
         } catch (err: unknown) {

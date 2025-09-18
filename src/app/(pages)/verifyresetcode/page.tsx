@@ -23,8 +23,8 @@ const ForgetPassword = () => {
     async function handleVerify(values: VerifySchemaType) {
         try {
             const data = await VerfiyCode(values.resetCode)
-            if (data && data.statusMsg === 'success') {
-                toast.success(data.message);
+            if (data && data.status === 'success') {
+                toast.success('Code has been verified');
                 router.push('/resetpassword')
             }
         } catch (err: unknown) {

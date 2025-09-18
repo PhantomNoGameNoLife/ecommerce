@@ -16,9 +16,10 @@ import { useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import UserSkeleton from "@/app/_components/skeleton/UserSkeleton"
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
+import ChangePassword from "@/app/_components/dialogs/ChangePassword"
 
 const ProfilePage = () => {
-  const {userLoading, data} = useSelector((state: RootState) => state.user)
+  const { userLoading, data } = useSelector((state: RootState) => state.user)
 
   if (userLoading) {
     return <UserSkeleton />
@@ -68,9 +69,20 @@ const ProfilePage = () => {
                 </DialogContent>
               </Dialog>
 
-              <Button className="mt-4 ms-2 bg-primary text-primary-foreground hover:bg-primary/80 cursor-pointer">
-                Change Password
-              </Button>
+              {/* Change Password Profile with Modal */}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="mt-4 ms-2 bg-primary text-primary-foreground hover:bg-primary/80 cursor-pointer">
+                    Change Password
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto scrollbar-thin overflow-x-hidden scrollbar-thumb-primary scrollbar-track-background px-0">
+                  <VisuallyHidden>
+                    <DialogTitle>Change Password Profile</DialogTitle>
+                  </VisuallyHidden>
+                  <ChangePassword />
+                </DialogContent>
+              </Dialog>
             </div>
 
             {/* Right section */}

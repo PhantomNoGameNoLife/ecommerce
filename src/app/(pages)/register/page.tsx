@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { registerSchema, type RegisterSchemaType } from '@/schema/register.s'
 import { registerFields } from '@/types/authFailds.t'
-import type { UserRegister } from '@/types/user.t'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
@@ -14,6 +13,7 @@ import Link from 'next/link'
 import { Loader2 } from 'lucide-react'
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useState } from 'react'
+import { SignUp } from '@/apis/userApi'
 
 
 const Register = () => {
@@ -33,7 +33,7 @@ const Register = () => {
 
   async function createAccount(values: RegisterSchemaType) {
     try {
-      const { data }: { data: UserRegister } = await axios.post(`${process.env.NEXT_URL}/auth/signup`, values)
+      const data = await SignUp(values)
       toast.success(data.message)
       router.push('/login')
     } catch (err: unknown) {
