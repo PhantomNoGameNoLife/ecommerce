@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { RootState } from "@/redux/store"
 import { useSelector } from "react-redux"
@@ -9,7 +9,20 @@ import { UploadButton } from "@/utilities/uploadthing"
 
 export function AvatarUpload({ onUpload }: { onUpload: (url: string, key: string) => void }) {
     const { data } = useSelector((state: RootState) => state.user)
-    const [preview, setPreview] = useState<string | undefined>(data?.addresses[data.addresses.length - 1].details)
+    const [preview, setPreview] = useState<string | undefined>(undefined)
+
+    useEffect(() => {
+        if (data?.addresses?.length) {
+            const latestDetails = data.addresses[data.addresses.length - 1]?.details;
+            if (latestDetails?.startsWith("http")) {
+                setPreview(latestDetails);
+            } else {
+                setPreview(undefined);
+            }
+        } else {
+            setPreview(undefined);
+        }
+    }, [data]);
 
     return (
         <div className="flex flex-col items-center gap-3">
@@ -30,7 +43,7 @@ export function AvatarUpload({ onUpload }: { onUpload: (url: string, key: string
             <UploadButton
                 appearance={{
                     button: "ut-button",
-                    container: "ut-container", 
+                    container: "ut-container",
                     allowedContent: "ut-allowed",
                 }}
                 content={{

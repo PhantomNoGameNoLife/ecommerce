@@ -25,6 +25,8 @@ const ProfilePage = () => {
     return <UserSkeleton />
   }
 
+  const lastAddress = data?.addresses?.length ? data.addresses[data.addresses.length - 1] : null
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-r from-background/90 to-background">
       <motion.div
@@ -37,9 +39,9 @@ const ProfilePage = () => {
           <CardContent className="p-8 flex flex-col md:flex-row">
             {/* Left section */}
             <div className="md:w-1/3 text-center mb-8 md:mb-0">
-              {data?.addresses[data.addresses.length - 1]?.details?.startsWith("http") ? (
+              {lastAddress?.details?.startsWith("http") ? (
                 <Image
-                  src={data.addresses[data.addresses.length - 1].details}
+                  src={lastAddress.details}
                   alt="Profile Picture"
                   width={192}
                   height={192}
@@ -47,7 +49,9 @@ const ProfilePage = () => {
                 />
               ) : (
                 <div className="size-48 mx-auto mb-4 rounded-full flex items-center justify-center bg-foreground text-primary-foreground border-4 border-primary overflow-hidden">
-                  <span className='select-none font-bold text-6xl antialiased font-mono'>{data?.name.charAt(0).toUpperCase()}</span>
+                  <span className='select-none font-bold text-6xl antialiased font-mono'>
+                    {data?.name?.charAt(0).toUpperCase()}
+                  </span>
                 </div>
               )}
               <h1 className="text-2xl font-bold text-foreground mb-2">
@@ -101,20 +105,31 @@ const ProfilePage = () => {
                 </li>
               </ul>
 
-              <h2 className="text-xl font-semibold text-foreground mb-4 mt-6">
-                Address
-              </h2>
-              <ul className="space-y-3">
-                <li className="flex items-center">
-                  name:{" "}<span className="ms-2 text-muted-foreground">{data?.addresses[data?.addresses.length - 1].name}</span>
-                </li>
-                <li className="flex items-center">
-                  city:{" "}<span className="ms-2 text-muted-foreground">{data?.addresses[data?.addresses.length - 1].city}</span>
-                </li>
-                <li className="flex items-center">
-                  phone:{" "}<span className="ms-2 text-muted-foreground">{data?.addresses[data?.addresses.length - 1].phone}</span>
-                </li>
-              </ul>
+              {lastAddress?.name != '' && (
+                <>
+                  <h2 className="text-xl font-semibold text-foreground mb-4 mt-6">
+                    Address
+                  </h2>
+                  <ul className="space-y-3">
+                    <li className="flex items-center">
+                      name:{" "}
+                      <span className="ms-2 text-muted-foreground">{lastAddress?.name}</span>
+                    </li>
+                    {lastAddress?.city != '' && (
+                      <li className="flex items-center">
+                        city:{" "}
+                        <span className="ms-2 text-muted-foreground">{lastAddress?.city}</span>
+                      </li>
+                    )}
+                    {lastAddress?.phone != '' && (
+                      <li className="flex items-center">
+                        phone:{" "}
+                        <span className="ms-2 text-muted-foreground">{lastAddress?.phone}</span>
+                      </li>
+                    )}
+                  </ul>
+                </>
+              )}
             </div>
           </CardContent>
         </Card>

@@ -26,6 +26,8 @@ const ProfileEditForm = () => {
     const savedRef = useRef(saved)
     const uploadedFileRef = useRef(uploadedFile)
 
+    const letAddresses = data?.addresses?.length ? data.addresses[data.addresses.length - 1] : null
+
     useEffect(() => {
         savedRef.current = saved
     }, [saved])
@@ -37,15 +39,12 @@ const ProfileEditForm = () => {
     const form = useForm<ProfileSchemaType>({
         resolver: zodResolver(profileSchema),
         defaultValues: {
-            avatar:
-                data?.addresses?.[data.addresses.length - 1]?.details?.startsWith("http")
-                    ? data?.addresses[data.addresses.length - 1].details
-                    : "",
-            name: data?.name,
-            phone: data?.phone,
-            addressName: data?.addresses[data?.addresses.length - 1].name,
-            addressPhone: data?.addresses[data?.addresses.length - 1].phone,
-            addressCity: data?.addresses[data?.addresses.length - 1].city,
+            avatar: letAddresses?.details?.startsWith("http") ? letAddresses.details : "",
+            name: data?.name ?? "",
+            phone: data?.phone ?? "",
+            addressName: letAddresses?.name ?? "",
+            addressPhone: letAddresses?.phone ?? "",
+            addressCity: letAddresses?.city ?? "",
         },
     })
 
@@ -138,7 +137,7 @@ const ProfileEditForm = () => {
                                                         }}
                                                     />
                                                 ) : (
-                                                    <Input type={f.type} {...field} placeholder={`Enter your ${f.name}`} />
+                                                    <Input type={f.type} {...field} placeholder={`Enter your ${f.name}`} value={field.value ?? ""} />
                                                 )}
                                             </FormControl>
                                             <FormMessage />

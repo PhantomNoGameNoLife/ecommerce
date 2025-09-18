@@ -32,6 +32,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "FreshCart",
   description: "FreshCart is ecommerce website",
+  icons: {
+    icon: "/freshcart-logo.ico",
+  },
 };
 
 export default function RootLayout({

@@ -32,6 +32,7 @@ export default function UserMenu() {
   const pathname = usePathname();
   const { status } = useSession()
   const { data } = useSelector((state: RootState) => state.user)
+  const lastAddress = data?.addresses?.length ? data.addresses[data.addresses.length - 1] : null
 
   return (
     <DropdownMenu>
@@ -40,10 +41,13 @@ export default function UserMenu() {
           <Avatar>
             {status === 'loading' && <Skeleton className="!size-8 rounded-full" />}
             {status === 'unauthenticated' && <Image src={user} alt="Profile image" className="rounded-full !size-8" />}
-            {status === 'authenticated' && data?.addresses?.[data.addresses.length - 1]?.details?.startsWith("http") ?
-              <Image src={data?.addresses?.[data.addresses.length - 1]?.details} width={32} height={32} alt="Profile image" className="rounded-full !size-8 object-cover" />
-              : <AvatarFallback className="bg-foreground text-primary-foreground font-bold text-md !size-8">{data?.name.charAt(0).toUpperCase()}</AvatarFallback>
-            }
+            {status === 'authenticated' && lastAddress?.details?.startsWith("http") ? (
+              <Image src={lastAddress.details} width={32} height={32} alt="Profile image" className="rounded-full !size-8 object-cover" />
+            ) : (
+              <AvatarFallback className="bg-foreground text-primary-foreground font-bold text-md !size-8">
+                {data?.name?.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            )}
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
