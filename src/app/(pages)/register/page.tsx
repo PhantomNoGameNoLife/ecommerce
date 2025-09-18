@@ -37,11 +37,14 @@ const Register = () => {
       toast.success(data.message)
       router.push('/login')
     } catch (err: unknown) {
+      let msg = "Something went wrong";
       if (axios.isAxiosError(err)) {
-        toast.error(err.response?.data?.message)
-      } else {
-        toast.error("Unexpected error happened")
+        msg = err.response?.data?.message || err.message;
+      } else if (err instanceof Error) {
+        msg = err.message;
       }
+
+      toast.error(msg);
     }
   }
 

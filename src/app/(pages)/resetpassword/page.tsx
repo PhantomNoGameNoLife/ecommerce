@@ -12,8 +12,9 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { ResetPassword } from '@/apis/forgotApi'
+import axios from 'axios'
 
-const Login = () => {
+const ResetPasswordPage = () => {
     const router = useRouter()
 
     const [showPassword, setShowPassword] = useState(false);
@@ -33,9 +34,14 @@ const Login = () => {
                 router.push('/login')
             }
         } catch (err: unknown) {
-            if (err instanceof Error) {
-                toast.error(err.message);
-            } else toast.error("Something went wrong");
+            let msg = "Something went wrong";
+            if (axios.isAxiosError(err)) {
+                msg = err.response?.data?.message || err.message;
+            } else if (err instanceof Error) {
+                msg = err.message;
+            }
+
+            toast.error(msg);
         }
     }
 
@@ -89,4 +95,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default ResetPasswordPage

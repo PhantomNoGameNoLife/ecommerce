@@ -25,7 +25,7 @@ const HomeSlider = () => {
                     loop 
                     className="!rounded-none"
                     >
-                    <SwiperSlide><div className="h-[300px] md:h-[400px] aspect-[750/483] w-full relative"><Image className="md:object-cover rounded-xl"  sizes="(max-width: 768px) 100vw, 66vw" fill priority fetchPriority="high" src={slide1} alt="slide 1" /></div></SwiperSlide>
+                    <SwiperSlide><div className="h-[300px] md:h-[400px] aspect-[750/483] w-full relative"><Image className="md:object-cover rounded-xl rounded-xl md:rounded-none md:rounded-l-xl"  sizes="(max-width: 768px) 100vw, 66vw" fill priority fetchPriority="high" src={slide1} alt="slide 1" /></div></SwiperSlide>
                     <SwiperSlide><div className="h-[300px] md:h-[400px] aspect-[750/483] w-full relative"><Image className="md:object-cover rounded-xl rounded-xl md:rounded-none md:rounded-l-xl"  sizes="(max-width: 768px) 100vw, 66vw" fill src={slide2} alt="slide 2" /></div></SwiperSlide>
                     <SwiperSlide><div className="h-[300px] md:h-[400px] aspect-[750/483] w-full relative"><Image className="md:object-cover rounded-xl rounded-xl md:rounded-none md:rounded-l-xl"  sizes="(max-width: 768px) 100vw, 66vw" fill src={slide3} alt="slide 3" /></div></SwiperSlide>
                 </Swiper>

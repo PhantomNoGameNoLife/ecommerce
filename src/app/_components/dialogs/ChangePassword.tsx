@@ -31,13 +31,16 @@ const ChangePassword = () => {
         try {
             const data = await UpdatePassword(values)
             toast.success(data.message)
-            signOut({callbackUrl: '/login'})
+            signOut({ callbackUrl: '/login' })
         } catch (err: unknown) {
+            let msg = "Something went wrong";
             if (axios.isAxiosError(err)) {
-                toast.error(err.response?.data?.error.msg)
-            } else {
-                toast.error("Unexpected error happened")
+                msg = err.response?.data?.message || err.message;
+            } else if (err instanceof Error) {
+                msg = err.message;
             }
+
+            toast.error(msg);
         }
     }
 

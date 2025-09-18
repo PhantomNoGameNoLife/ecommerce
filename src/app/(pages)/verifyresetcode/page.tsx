@@ -9,8 +9,9 @@ import { VerfiyCode } from '@/apis/forgotApi'
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@/components/ui/input-otp'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import axios from 'axios'
 
-const ForgetPassword = () => {
+const VerifyResetCode = () => {
     const router = useRouter()
 
     const form = useForm<VerifySchemaType>({
@@ -23,14 +24,19 @@ const ForgetPassword = () => {
     async function handleVerify(values: VerifySchemaType) {
         try {
             const data = await VerfiyCode(values.resetCode)
-            if (data && data.status === 'success') {
+            if (data && data.status === 'Success') {
                 toast.success('Code has been verified');
                 router.push('/resetpassword')
             }
         } catch (err: unknown) {
-            if (err instanceof Error) {
-                toast.error(err.message);
-            } else toast.error("Something went wrong");
+            let msg = "Something went wrong";
+            if (axios.isAxiosError(err)) {
+                msg = err.response?.data?.message || err.message;
+            } else if (err instanceof Error) {
+                msg = err.message;
+            }
+
+            toast.error(msg);
         }
     }
 
@@ -82,4 +88,4 @@ const ForgetPassword = () => {
     )
 }
 
-export default ForgetPassword
+export default VerifyResetCode

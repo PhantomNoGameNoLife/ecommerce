@@ -9,6 +9,7 @@ import { Loader2 } from 'lucide-react'
 import { ForgotPassword } from '@/apis/forgotApi'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import axios from 'axios'
 
 const ForgetPassword = () => {
   const router = useRouter()
@@ -27,9 +28,14 @@ const ForgetPassword = () => {
         router.push('/verifyresetcode')
       }
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        toast.error(err.message);
-      } else toast.error("Something went wrong");
+      let msg = "Something went wrong";
+      if (axios.isAxiosError(err)) {
+        msg = err.response?.data?.message || err.message;
+      } else if (err instanceof Error) {
+        msg = err.message;
+      }
+
+      toast.error(msg);
     }
   }
 
