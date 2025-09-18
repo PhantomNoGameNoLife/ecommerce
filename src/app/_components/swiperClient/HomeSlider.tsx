@@ -16,7 +16,7 @@ const HomeSlider = () => {
                 <Swiper
                     spaceBetween={0}
                     slidesPerView={1}
-                    // modules={[Autoplay]}
+                    modules={[Autoplay]}
                     autoplay={{
                         delay: 2000,
                         disableOnInteraction: false,
