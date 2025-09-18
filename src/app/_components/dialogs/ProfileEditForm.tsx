@@ -9,7 +9,7 @@ import { Loader2 } from "lucide-react"
 import { toast } from "react-hot-toast"
 
 import { profileSchema, type ProfileSchemaType } from "@/schema/profile.s"
-import { profileFields } from "@/types/authFailds.t"
+import { profileFields } from "@/types/authFields.t"
 import { AvatarUpload } from "../avatarUpload/AvatarUpload"
 import { AppDispatch, RootState } from "@/redux/store"
 import { useDispatch, useSelector } from "react-redux"

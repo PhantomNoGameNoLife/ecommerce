@@ -5,84 +5,116 @@ import { getMyToken } from "@/utilities/token";
 import axios from "axios";
 
 export async function GetUserCart() {
-  const token = await getMyToken();
+  try {
+    const token = await getMyToken();
 
-  if (!token) {
-    throw new Error("No token found. Please login first.");
+    if (!token) {
+      throw new Error("No token found. Please login first.");
+    }
+
+    const res = await fetch(`${process.env.NEXT_URL}/cart`, {
+      headers: { token: token },
+    });
+
+    const data: Cart = await res.json();
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message || "Something went wrong");
+    }
+    throw new Error("Something went wrong");
   }
-
-  const res = await fetch(`${process.env.NEXT_URL}/cart`, {
-    headers: { token: token },
-  });
-
-  const data: Cart = await res.json();
-
-  return data;
 }
 
 export async function AddToCart(id: string) {
-  const token = await getMyToken();
+  try {
+    const token = await getMyToken();
 
-  if (!token) {
-    throw new Error("No token found. Please login first.");
-  }
-
-  const { data } = await axios.post(
-    `${process.env.NEXT_URL}/cart`,
-    { productId: id },
-    {
-      headers: { token: token },
+    if (!token) {
+      throw new Error("No token found. Please login first.");
     }
-  );
 
-  return data as Cart;
+    const { data } = await axios.post(
+      `${process.env.NEXT_URL}/cart`,
+      { productId: id },
+      {
+        headers: { token: token },
+      }
+    );
+
+    return data as Cart;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || "try again later");
+    }
+    throw new Error("Something went wrong");
+  }
 }
 
 export async function UpdateCartQuantity(id: string, count: number) {
-  const token = await getMyToken();
+  try {
+    const token = await getMyToken();
 
-  if (!token) {
-    throw new Error("No token found. Please login first.");
-  }
-
-  const { data } = await axios.put(
-    `${process.env.NEXT_URL}/cart/${id}`,
-    { count: count },
-    {
-      headers: { token: token },
+    if (!token) {
+      throw new Error("No token found. Please login first.");
     }
-  );
 
-  return data as Cart;
+    const { data } = await axios.put(
+      `${process.env.NEXT_URL}/cart/${id}`,
+      { count: count },
+      {
+        headers: { token: token },
+      }
+    );
+
+    return data as Cart;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || "try again later");
+    }
+    throw new Error("Something went wrong");
+  }
 }
 
 export async function RemoveCartItem(id: string) {
-  const token = await getMyToken();
+  try {
+    const token = await getMyToken();
 
-  if (!token) {
-    throw new Error("No token found. Please login first.");
-  }
-
-  const { data } = await axios.delete(
-    `${process.env.NEXT_URL}/cart/${id}`,
-    {
-      headers: { token: token },
+    if (!token) {
+      throw new Error("No token found. Please login first.");
     }
-  );
 
-  return data as Cart;
+    const { data } = await axios.delete(`${process.env.NEXT_URL}/cart/${id}`, {
+      headers: { token: token },
+    });
+
+    return data as Cart;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || "try again later");
+    }
+    throw new Error("Something went wrong");
+  }
 }
 
 export async function ClearCart() {
-  const token = await getMyToken();
+  try {
+    const token = await getMyToken();
 
-  if (!token) {
-    throw new Error("No token found. Please login first.");
+    if (!token) {
+      throw new Error("No token found. Please login first.");
+    }
+
+    const { data } = await axios.delete(`${process.env.NEXT_URL}/cart`, {
+      headers: { token: token },
+    });
+
+    return data as Cart;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || "try again later");
+    }
+    throw new Error("Something went wrong");
   }
-
-  const { data } = await axios.delete(`${process.env.NEXT_URL}/cart`, {
-    headers: { token: token },
-  });
-
-  return data as Cart;
 }

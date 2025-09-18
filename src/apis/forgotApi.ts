@@ -3,31 +3,52 @@
 import axios from "axios";
 
 export async function ForgotPassword(email: string) {
-  const { data } = await axios.post(
-    `${process.env.NEXT_URL}/auth/forgotPasswords`,
-    { email }
-  );
+  try {
+    const { data } = await axios.post(
+      `${process.env.NEXT_URL}/auth/forgotPasswords`,
+      { email }
+    );
 
-  return data;
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || "try again later");
+    }
+    throw new Error("Something went wrong");
+  }
 }
 
 export async function VerfiyCode(resetCode: string) {
-  const { data } = await axios.post(
-    `${process.env.NEXT_URL}/auth/verifyResetCode`,
-    { resetCode }
-  );
+  try {
+    const { data } = await axios.post(
+      `${process.env.NEXT_URL}/auth/verifyResetCode`,
+      { resetCode }
+    );
 
-  return data;
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || "try again later");
+    }
+    throw new Error("Something went wrong");
+  }
 }
 
 export async function ResetPassword(values: {
   email: string;
   newPassword: string;
 }) {
-  const { data } = await axios.put(
-    `${process.env.NEXT_URL}/auth/resetPassword`,
-    values
-  );
+  try {
+    const { data } = await axios.put(
+      `${process.env.NEXT_URL}/auth/resetPassword`,
+      values
+    );
 
-  return data;
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || "try again later");
+    }
+    throw new Error("Something went wrong");
+  }
 }

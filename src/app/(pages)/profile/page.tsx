@@ -105,7 +105,7 @@ const ProfilePage = () => {
                 </li>
               </ul>
 
-              {lastAddress?.name != '' && (
+              {lastAddress?.name && lastAddress?.name != '' && (
                 <>
                   <h2 className="text-xl font-semibold text-foreground mb-4 mt-6">
                     Address
@@ -115,13 +115,13 @@ const ProfilePage = () => {
                       name:{" "}
                       <span className="ms-2 text-muted-foreground">{lastAddress?.name}</span>
                     </li>
-                    {lastAddress?.city != '' && (
+                    {lastAddress?.city && lastAddress?.city != '' && (
                       <li className="flex items-center">
                         city:{" "}
                         <span className="ms-2 text-muted-foreground">{lastAddress?.city}</span>
                       </li>
                     )}
-                    {lastAddress?.phone != '' && (
+                    {lastAddress?.phone && lastAddress?.phone != '' && (
                       <li className="flex items-center">
                         phone:{" "}
                         <span className="ms-2 text-muted-foreground">{lastAddress?.phone}</span>

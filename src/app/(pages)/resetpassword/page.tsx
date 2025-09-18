@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { resetSchema, type ResetSchemaType } from '@/schema/reset.s'
-import { resetFields } from '@/types/authFailds.t'
+import { resetFields } from '@/types/authFields.t'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
